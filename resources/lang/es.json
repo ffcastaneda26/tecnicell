@@ -31,5 +31,15 @@
     "Creating Role Paritipant": "Creando Rol Participante",
     "Creating Role Admin": "Creando Rol Admin",
     "Admin Role Created": "Rol Admin Creado",
-    "Permissions Created": "Permisos Creados"
+    "Permissions Created": "Permisos Creados",
+    "Geographic": "Geográficos",
+    "Countries": "Países",
+    "Country": "País",
+    "Updated": "Actualizado",
+    "Created": "Creado",
+    "Deleted": "Eliminado",
+    "Default": "¿Predeterminado?",
+    "State": "Entidad Federativa",
+    "States": "Entidades Federativas",
+    "Abbreviated": "Abreviado"
 }
