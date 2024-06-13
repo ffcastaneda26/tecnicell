@@ -25,7 +25,11 @@ class StateResource extends Resource
 
     protected static ?int $navigationSort = 30;
 
-    protected static ?string $cluster = Geographics::class;
+    // protected static ?string $cluster = Geographics::class;
+    public static function getNavigationGroup(): string
+    {
+        return __('Geographic');
+    }
     public static function getModelLabel(): string
     {
         return __('State');

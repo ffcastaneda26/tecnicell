@@ -31,8 +31,11 @@ class CountryResource extends Resource
         return __('Countries');
     }
 
-    protected static ?string $cluster = Geographics::class;
-
+    // protected static ?string $cluster = Geographics::class;
+    public static function getNavigationGroup(): string
+    {
+        return __('Geographic');
+    }
 
     public static function getModelLabel(): string
     {
