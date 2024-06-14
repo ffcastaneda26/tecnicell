@@ -41,5 +41,11 @@
     "Default": "¿Predeterminado?",
     "State": "Entidad Federativa",
     "States": "Entidades Federativas",
-    "Abbreviated": "Abreviado"
+    "Abbreviated": "Abreviado",
+    "Tax Regimes": "Regímenes Fiscales",
+    "Tax Regime": "Régimen Fiscal",
+    "Physics": "Físicas",
+    "Morals": "Morales",
+    "Start Validity": "Inicia Vigencia",
+    "Finish Validity": "Final Vigencia"
 }
