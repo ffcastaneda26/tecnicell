@@ -56,5 +56,19 @@
     "Device Type": "Tipo de Dispositivo",
     "Product": "Producto",
     "Products": "Productos",
-    "Description": "Descripción"
+    "Description": "Descripción",
+    "Company": "Empresa",
+    "Companies": "Empresas",
+    "Municipality": "Municipio",
+    "City": "Ciudad",
+    "Colony": "Colonia",
+    "Zipcode": "C.P.",
+    "Logo": "Logotipo",
+    "Generals": "Generales",
+    "Phone": "Teléfono",
+    "Address": "Dirección",
+    "Num Ext": "No. Exterior",
+    "Num Int": "No. Interior",
+    "State id": "Entidad Federativa"
+
 }

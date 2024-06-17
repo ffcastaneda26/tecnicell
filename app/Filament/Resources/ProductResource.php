@@ -54,8 +54,11 @@ class ProductResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        
-        return static::getModel()::count();
+
+        if(static::getModel()::count()){
+            return static::getModel()::count();
+        }
+        return '';
     }
 
     public static function form(Form $form): Form
