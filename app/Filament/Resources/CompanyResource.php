@@ -20,6 +20,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 
@@ -74,7 +76,7 @@ class CompanyResource extends Resource
                                             ->unique(ignoreRecord: true)
                                             ->translateLabel()
                                             ->maxLength(100)
-                                            ->columnSpan(2),
+                                            ->columnSpan(3),
                                         TextInput::make('short')
                                             ->required()
                                             ->unique(ignoreRecord: true)
@@ -92,8 +94,15 @@ class CompanyResource extends Resource
                                             ->columns(1),
                                         TextInput::make('phone')
                                             ->maxLength(15)
+                                            ->translateLabel(),
+                                        Toggle::make('active')
                                             ->translateLabel()
-                                    ])->columns(3),
+                                            ->inline(false)
+                                            ->onIcon('heroicon-m-check-circle')
+                                            ->offIcon('heroicon-m-x-circle')
+                                            ->onColor('success')
+                                            ->offColor('danger'),
+                                    ])->columns(4),
                                 Section::make()
                                     ->schema([
                                         TextInput::make('address')
@@ -169,6 +178,9 @@ class CompanyResource extends Resource
                     ->sortable()
                     ->searchable(),
                 ImageColumn::make('logo'),
+                IconColumn::make('active')
+                ->translateLabel()
+                ->boolean()
             ])
             ->filters([
                 //
