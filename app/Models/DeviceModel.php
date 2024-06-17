@@ -4,23 +4,24 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Brand extends Model
+class DeviceModel extends Model
 {
     use HasFactory;
-    protected $table = 'brands';
+
+    protected $table='device_models';
+
     public $timestamps = false;
 
     protected $fillable = [
+        'brand_id',
         'name',
         'image'
     ];
 
-    public function devices():HasMany
+    public function brand(): BelongsTo
     {
-        return $this->hasMany(DeviceModel::class);
+        return $this->belongsTo(Brand::class);
     }
-
-
 }

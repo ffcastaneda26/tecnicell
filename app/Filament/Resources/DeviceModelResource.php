@@ -2,11 +2,12 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\BrandResource\Pages;
-use App\Filament\Resources\BrandResource\RelationManagers;
-use App\Models\Brand;
+use App\Filament\Resources\DeviceModelResource\Pages;
+use App\Filament\Resources\DeviceModelResource\RelationManagers;
+use App\Models\DeviceModel;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -17,52 +18,50 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class BrandResource extends Resource
+class DeviceModelResource extends Resource
 {
-    protected static ?string $model = Brand::class;
+    protected static ?string $model = DeviceModel::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-wallet';
+    protected static ?string $navigationIcon = 'heroicon-o-device-tablet';
     protected static ?string $activeNavigationIcon = 'heroicon-s-shield-check';
-    protected static ?int $navigationSort = 1;
-
-
-    public static function getNavigationLabel(): string
-    {
-        return __('Brands');
-    }
-
+    protected static ?int $navigationSort = 2;
 
     public static function getModelLabel(): string
     {
-        return __('Brand');
+        return __('Model');
+    }
+    public static function getNavigationLabel(): string
+    {
+        return __('Models');
     }
 
 
     public static function getPluralLabel(): ?string
     {
-        return __('Brands');
+        return __('Models');
     }
+
+
     public static function getNavigationGroup(): string
     {
         return __('Catalogs');
-    }
-
-    public static function getNavigationBadge(): ?string
-    {
-        return static::getModel()::count();
     }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
+                Select::make('brand_id')
+                    ->relationship('brand','name')
+                    ->required()
+                    ->translateLabel(),
                 TextInput::make('name')
                     ->required()
                     ->translateLabel()
                     ->maxLength(100),
                 FileUpload::make('image')
                     ->translateLabel()
-                    ->directory('brands')
+                    ->directory('models')
                     ->preserveFilenames(),
             ]);
     }
@@ -71,6 +70,7 @@ class BrandResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('brand.name')->translateLabel(),
                 TextColumn::make('name')
                     ->translateLabel()
                     ->sortable()
@@ -100,9 +100,9 @@ class BrandResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListBrands::route('/'),
-            'create' => Pages\CreateBrand::route('/create'),
-            'edit' => Pages\EditBrand::route('/{record}/edit'),
+            'index' => Pages\ListDeviceModels::route('/'),
+            'create' => Pages\CreateDeviceModel::route('/create'),
+            'edit' => Pages\EditDeviceModel::route('/{record}/edit'),
         ];
     }
 }
