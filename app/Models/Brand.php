@@ -17,7 +17,7 @@ class Brand extends Model
         'image'
     ];
 
-    public function devices():HasMany
+    public function models():HasMany
     {
         return $this->hasMany(DeviceModel::class);
     }
