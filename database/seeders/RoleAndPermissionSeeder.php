@@ -34,13 +34,13 @@ class RoleAndPermissionSeeder extends Seeder
 
         $this->command->info(__('Creating Role Admin'));
 
+
         // Admin con todos los permisos
         $role = Role::create(['name' => 'Admin']);
         $this->command->info(__('Admin Role Created'));
         $this->command->info(__('Creating Role para Suscriptor'));
-        $role = Role::create(['name' => env('APP_ROLE_TO_SUSCRIPTOR','Suscriptor')]);
+        $role = Role::create(['name' => env('APP_ROL_TO_SUSCRIPTOR','Suscriptor')]);
         $this->command->info('Rol ' . env('APP_ROL_TO_SUSCRIPTOR','Suscriptor') . ' ha sido creado');
-
 
     }
 }

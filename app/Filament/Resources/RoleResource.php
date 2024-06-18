@@ -28,10 +28,13 @@ class RoleResource extends Resource
     protected static ?string $model = Role::class;
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
 
-    protected static ?int $navigationSort = 2;
-    protected static ?string $cluster = Security::class;
+    protected static ?int $navigationSort = 1;
+    // protected static ?string $cluster = Security::class;
 
-
+    public static function getNavigationGroup(): string
+    {
+        return __('Security');
+    }
     public static function getNavigationLabel(): string
     {
         return __('Roles');

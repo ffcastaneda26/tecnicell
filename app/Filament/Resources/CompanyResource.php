@@ -155,7 +155,7 @@ class CompanyResource extends Resource
                                             ->translateLabel()
                                             ->maxLength(5)
                                             ->validationMessages([
-                                                'maxLenght' => 'The :attribute has already been registered.',
+                                                'maxLenght' => 'The :attribute.',
                                             ]),
                                     ])->columns(5),
                             ]),

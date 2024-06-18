@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Resources\CompanyResource;
 use App\Filament\Resources\ProductResource;
+use App\Filament\Resources\UserResource;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -42,6 +43,7 @@ class CompanyPanelProvider extends PanelProvider
                 Widgets\FilamentInfoWidget::class,
             ])
             ->resources([
+                UserResource::class,
                 CompanyResource::class,
                 ProductResource::class,
             ])
