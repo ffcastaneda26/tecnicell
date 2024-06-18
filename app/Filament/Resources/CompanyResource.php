@@ -76,24 +76,11 @@ class CompanyResource extends Resource
                                             ->unique(ignoreRecord: true)
                                             ->translateLabel()
                                             ->maxLength(100)
-                                            ->columnSpan(3),
+                                            ->columnSpan(2),
                                         TextInput::make('short')
                                             ->required()
                                             ->unique(ignoreRecord: true)
                                             ->maxLength(20)
-                                            ->translateLabel()
-                                            ->columns(1),
-                                        TextInput::make('rfc')
-                                            ->maxLength(13)
-                                            ->translateLabel()
-                                            ->columns(1),
-                                        TextInput::make('email')
-                                            ->maxLength(100)
-                                            ->email()
-                                            ->translateLabel()
-                                            ->columns(1),
-                                        TextInput::make('phone')
-                                            ->maxLength(15)
                                             ->translateLabel(),
                                         Toggle::make('active')
                                             ->translateLabel()
@@ -101,8 +88,33 @@ class CompanyResource extends Resource
                                             ->onIcon('heroicon-m-check-circle')
                                             ->offIcon('heroicon-m-x-circle')
                                             ->onColor('success')
-                                            ->offColor('danger'),
+                                            ->offColor('danger')
+                                            ->disabled(! auth()->user()->hasRole('Admin'))
                                     ])->columns(4),
+                                Group::make()
+                                    ->schema([
+                                        Section::make()
+                                            ->schema([
+                                                TextInput::make('rfc')
+                                                    ->maxLength(13)
+                                                    ->translateLabel()
+                                                    ->columns(1),
+                                                TextInput::make('email')
+                                                    ->maxLength(100)
+                                                    ->email()
+                                                    ->translateLabel()
+                                                    ->columns(1),
+                                                TextInput::make('phone')
+                                                    ->maxLength(15)
+                                                    ->translateLabel(),
+                                                TextInput::make('permitted_branches')
+                                                    ->minLength(1)
+                                                    ->numeric()
+                                                    ->translateLabel()
+                                                    ->default(1)
+                                                    ->disabled(! auth()->user()->hasRole('Admin')),
+                                            ])->columns(4),
+                                    ]),
                                 Section::make()
                                     ->schema([
                                         TextInput::make('address')
@@ -141,7 +153,10 @@ class CompanyResource extends Resource
                                             ->maxLength(100),
                                         TextInput::make('zipcode')
                                             ->translateLabel()
-                                            ->maxLength(5),
+                                            ->maxLength(5)
+                                            ->validationMessages([
+                                                'maxLenght' => 'The :attribute has already been registered.',
+                                            ]),
                                     ])->columns(5),
                             ]),
                         Tabs\Tab::make(__('Logo'))
@@ -179,8 +194,9 @@ class CompanyResource extends Resource
                     ->searchable(),
                 ImageColumn::make('logo'),
                 IconColumn::make('active')
-                ->translateLabel()
-                ->boolean()
+                    ->translateLabel()
+                    ->boolean(),
+
             ])
             ->filters([
                 //

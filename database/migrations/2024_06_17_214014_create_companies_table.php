@@ -32,6 +32,7 @@ return new class extends Migration
             $table->string('colony',100)->nullable()->default(null)->comment('Colonia');
             $table->string('zipcode',5)->nullable()->default(null)->comment('Código Postal');
             $table->string('logo')->nullable()->default(null)->comment('Logotipo');
+            $table->integer('permitted_branches')->default(1)->comment('Sucursales Permitidas');
             $table->boolean('active')->default(1)->comment('¿Está activa?');
             $table->foreignIdFor(User::class)->comment('Usuario que creó o modificó');
             $table->timestamps();

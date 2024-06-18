@@ -69,6 +69,7 @@
     "Address": "Dirección",
     "Num Ext": "No. Exterior",
     "Num Int": "No. Interior",
-    "State id": "Entidad Federativa"
+    "State id": "Entidad Federativa",
+    "Permitted branches": "Sucursales Permitidas"
 
 }
