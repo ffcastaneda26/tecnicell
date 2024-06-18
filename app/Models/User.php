@@ -76,7 +76,7 @@ class User extends Authenticatable
     public function roles_gerente(): HasMany
     {
         return $this->hasMany(Role::class)
-            ->whereNotIn('id',[1,2]);
+            ->whereNotIn('id',[1]);
     }
 
     public function roles_admin(): HasMany
