@@ -16,7 +16,11 @@ class UserObserver
             if(!$user->hasRole('Admin')){
                 $user->assignRole('Admin');
             }
-        }else{
+        }elseif($user->id == 2){
+            if(!$user->hasRole('Gerente')){
+                $user->assignRole('Gerente');
+            }
+        } else{
             if(Auth::user()->companies->count()){
                 $user->companies()->sync(Auth::user()->companies->first());
              }
@@ -36,10 +40,5 @@ class UserObserver
          }
     }
 
-    // public function updating(User $user): void
-    // {
-    //     dd('Se está actualizando');
-
-    // }
 
 }

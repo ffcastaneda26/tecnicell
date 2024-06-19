@@ -24,6 +24,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Support\Facades\Auth;
 
 class CompanyResource extends Resource
 {
@@ -36,7 +37,7 @@ class CompanyResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return __('Companies');
+        return Auth::user()->hasrole('Admin') ? __('Companies') : __('Company');
     }
 
 
@@ -48,7 +49,8 @@ class CompanyResource extends Resource
 
     public static function getPluralLabel(): ?string
     {
-        return __('Companies');
+        return Auth::user()->hasrole('Admin') ? __('Companies') : __('Company');
+
     }
     public static function getNavigationGroup(): string
     {
@@ -57,12 +59,28 @@ class CompanyResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count() ? static::getModel()::count() : '';
+        if (Auth::user()->hasRole('Admin')) {
+            return static::getModel()::count();
+        }
+        return null;
     }
 
+    public static function getEloquentQuery(): Builder
+    {
+        if (Auth::user()->hasRole('Admin')) {
+            return parent::getEloquentQuery();
+        }
+
+
+        if (Auth::user()->companies->count()) {
+            return parent::getEloquentQuery()
+                ->where('id',Auth::user()->companies->first()->id );
+        }
+
+
+    }
     public static function form(Form $form): Form
     {
-
         return $form
             ->schema([
                 Tabs::make('Tabs')

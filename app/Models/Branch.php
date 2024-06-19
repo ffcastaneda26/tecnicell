@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Observers\BranchObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
+// #[ObservedBy([UserObserver::class])]
+#[ObservedBy([BranchObserver::class])]
 class Branch extends Model
 {
     use HasFactory;
@@ -15,7 +18,6 @@ class Branch extends Model
         'name',
         'short',
         'slug',
-        'Rfc',
         'email',
         'phone',
         'address',
@@ -28,7 +30,6 @@ class Branch extends Model
         'colony',
         'zipcode',
         'logo',
-        'permitted_branches',
         'active',
         'user_id',
     ];

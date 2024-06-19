@@ -56,6 +56,7 @@ class UserResource extends Resource
             return static::getModel()::whereHas('companies',function($query){
                 $query->where('company_id', Auth::user()->companies->first()->id);
             })->count();
+
         }
         return static::getModel()::count();
     }
