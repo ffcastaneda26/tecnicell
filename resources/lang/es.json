@@ -72,6 +72,9 @@
     "State id": "Entidad Federativa",
     "Permitted branches": "Sucursales Permitidas",
     "Branches": "Sucursales",
-    "Branch": "Sucursal"
+    "Branch": "Sucursal",
+    "Profile": "Perfil",
+    "Log Out": "Salir",
+    "Manage Account": "Gestionar Cuenta"
 
 }
