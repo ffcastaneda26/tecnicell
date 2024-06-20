@@ -73,6 +73,10 @@ class User extends Authenticatable
         ];
     }
 
+    public function clients(): HasMany
+    {
+        return $this->hasMany(Client::class);
+    }
     public function roles_gerente(): HasMany
     {
         return $this->hasMany(Role::class)

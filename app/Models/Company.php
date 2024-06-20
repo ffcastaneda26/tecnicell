@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Company extends Model
 {
@@ -33,6 +34,7 @@ class Company extends Model
         'user_id',
     ];
 
+
     protected function rfc(): Attribute
     {
         return Attribute::make(
@@ -41,6 +43,10 @@ class Company extends Model
         );
     }
 
+    public function clients(): HasMany
+    {
+        return $this->hasMany(Client::class);
+    }
     public function country():BelongsTo
     {
         return $this->belongsTo(Country::class);
@@ -60,5 +66,7 @@ class Company extends Model
     {
         return $this->belongsToMany(User::class);
     }
+
+
 
 }

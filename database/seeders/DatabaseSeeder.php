@@ -25,14 +25,19 @@ class DatabaseSeeder extends Seeder
             'countries',
             'regimenes_fiscales',
             'companies',
+            'clients'
         ]);
 
-        $this->call(RoleAndPermissionSeeder::class);
-        $this->call(UserAdminTableSeeder::class);
-        $this->call(CountrySeeder::class);
-        $this->call(StatesSeeder::class);
-        $this->call(RegimenFiscalSeeder::class);
-        $this->call(CompanySeeder::class);
+        $this->call([
+            RoleAndPermissionSeeder::class,
+            UserAdminTableSeeder::class,
+            CountrySeeder::class,
+            StatesSeeder::class,
+            RegimenFiscalSeeder::class,
+            CompanySeeder::class,
+            ClientSeeder::class,
+        ]);
+
     }
 
     protected function truncateTables(array $tables) {
