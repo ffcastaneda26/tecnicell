@@ -20,6 +20,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Forms\Components\MarkdownEditor;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Company\Resources\ClientResource\Pages;
 use App\Filament\Company\Resources\ClientResource\RelationManagers;
@@ -91,16 +92,6 @@ class ClientResource extends Resource
                                     ->translateLabel()
                                     ->maxLength(100)
                                     ->columnSpan(2),
-                                Toggle::make('active')
-                                    ->translateLabel()
-                                    ->inline(false)
-                                    ->onIcon('heroicon-m-check-circle')
-                                    ->offIcon('heroicon-m-x-circle')
-                                    ->onColor('success')
-                                    ->offColor('danger')
-                            ])->columns(3),
-                        Section::make()
-                            ->schema([
                                 TextInput::make('email')
                                     ->maxLength(100)
                                     ->email()
@@ -109,16 +100,11 @@ class ClientResource extends Resource
                                 TextInput::make('phone')
                                     ->maxLength(15)
                                     ->translateLabel(),
-                                FileUpload::make('photo')
-                                    ->translateLabel()
-                                    ->directory('clients')
-                                    ->preserveFilenames()
-                                    ->columnSpanFull(),
                             ])->columns(2),
                         Section::make()
                             ->schema([
-
-                            ])
+                                MarkdownEditor::make('notes')
+                            ]),
                     ])->columns(3),
                 Group::make()
                     ->schema([
@@ -158,8 +144,23 @@ class ClientResource extends Resource
                                 TextInput::make('zipcode')
                                     ->translateLabel()
                                     ->maxLength(5),
+                                Toggle::make('active')
+                                    ->translateLabel()
+                                    ->inline(false)
+                                    ->onIcon('heroicon-m-check-circle')
+                                    ->offIcon('heroicon-m-x-circle')
+                                    ->onColor('success')
+                                    ->offColor('danger'),
 
                             ])->columns(2),
+                        Section::make()
+                        ->schema([
+                            FileUpload::make('photo')
+                            ->translateLabel()
+                            ->directory('clients')
+                            ->preserveFilenames()
+                            ->columnSpanFull(),
+                        ])->columnSpanFull()
                     ]),
 
 
