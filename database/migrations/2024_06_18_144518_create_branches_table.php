@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('num_ext',6)->nullable()->default(null)->comment('Número Exterior');
             $table->string('num_int',6)->nullable()->default(null)->comment('Número Interior');
             $table->foreignIdFor(Country::class)->default(135)->comment('País');
-            $table->foreignIdFor(State::class)->comment('Entiad Federativa');
+            $table->foreignIdFor(State::class)->default(7)->comment('Entiad Federativa');
             $table->string('municipality',100)->nullable()->default(null)->comment('Municipio');
             $table->string('city',100)->nullable()->default(null)->comment('Ciudad');
             $table->string('colony',100)->nullable()->default(null)->comment('Colonia');

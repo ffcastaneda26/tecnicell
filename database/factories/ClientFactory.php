@@ -20,7 +20,7 @@ class ClientFactory extends Factory
         return [
             'name'          => fake()->name(),
             'email'         => fake()->unique()->safeEmail(),
-            'phone'         => fake()->phoneNumber(),
+            'phone'         => fake()->e164PhoneNumber(),
             'address'       => fake()->streetName(),
             'num_ext'       => fake()->randomNumber(4),
             'num_int'       => fake()->randomNumber(2),

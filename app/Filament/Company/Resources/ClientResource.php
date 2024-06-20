@@ -4,12 +4,11 @@ namespace App\Filament\Company\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
-use App\Models\Branch;
+use App\Models\Client;
 use App\Models\Country;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
-use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Group;
 use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Select;
@@ -22,34 +21,34 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Company\Resources\BranchResource\Pages;
-use App\Filament\Company\Resources\BranchResource\RelationManagers;
+use App\Filament\Company\Resources\ClientResource\Pages;
+use App\Filament\Company\Resources\ClientResource\RelationManagers;
 
-class BranchResource extends Resource
+class ClientResource extends Resource
 {
-    protected static ?string $model = Branch::class;
+    protected static ?string $model = Client::class;
 
 
-    protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
+    protected static ?string $navigationIcon = 'heroicon-o-user-circle';
     protected static ?string $activeNavigationIcon = 'heroicon-s-shield-check';
-    protected static ?int $navigationSort = 6;
+    protected static ?int $navigationSort = 7;
 
 
     public static function getNavigationLabel(): string
     {
-        return __('Branches');
+        return __('Clients');
     }
 
 
     public static function getModelLabel(): string
     {
-        return __('Branch');
+        return __('Client');
     }
 
 
     public static function getPluralLabel(): ?string
     {
-        return __('Branches');
+        return __('Clients');
 
     }
     public static function getNavigationGroup(): string
@@ -61,13 +60,14 @@ class BranchResource extends Resource
     {
         if(!Auth::user()->hasRole('Admin')){
             $company = Auth::user()->companies->first();
-            return $company->branches()->count();
+            return $company->clients()->count();
         }
         return  null;
     }
 
     public static function getEloquentQuery(): Builder
     {
+
         if(Auth::user()->hasrole('Admin')){
             return parent::getEloquentQuery();
         }
@@ -91,11 +91,13 @@ class BranchResource extends Resource
                                     ->translateLabel()
                                     ->maxLength(100)
                                     ->columnSpan(2),
-                                TextInput::make('short')
-                                    ->required()
-                                    ->unique(ignoreRecord: true)
-                                    ->maxLength(20)
-                                    ->translateLabel(),
+                                Toggle::make('active')
+                                    ->translateLabel()
+                                    ->inline(false)
+                                    ->onIcon('heroicon-m-check-circle')
+                                    ->offIcon('heroicon-m-x-circle')
+                                    ->onColor('success')
+                                    ->offColor('danger')
                             ])->columns(3),
                         Section::make()
                             ->schema([
@@ -107,16 +109,16 @@ class BranchResource extends Resource
                                 TextInput::make('phone')
                                     ->maxLength(15)
                                     ->translateLabel(),
-                                FileUpload::make('logo')
+                                FileUpload::make('photo')
                                     ->translateLabel()
-                                    ->directory('branches')
+                                    ->directory('clients')
                                     ->preserveFilenames()
                                     ->columnSpanFull(),
                             ])->columns(2),
                         Section::make()
-                        ->schema([
+                            ->schema([
 
-                        ])
+                            ])
                     ])->columns(3),
                 Group::make()
                     ->schema([
@@ -156,13 +158,7 @@ class BranchResource extends Resource
                                 TextInput::make('zipcode')
                                     ->translateLabel()
                                     ->maxLength(5),
-                                Toggle::make('active')
-                                    ->translateLabel()
-                                    ->inline(false)
-                                    ->onIcon('heroicon-m-check-circle')
-                                    ->offIcon('heroicon-m-x-circle')
-                                    ->onColor('success')
-                                    ->offColor('danger')
+
                             ])->columns(2),
                     ]),
 
@@ -179,10 +175,6 @@ class BranchResource extends Resource
                     ->translateLabel()
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('short')
-                    ->translateLabel()
-                    ->sortable()
-                    ->searchable(),
                 TextColumn::make('email')
                     ->translateLabel()
                     ->sortable()
@@ -191,7 +183,7 @@ class BranchResource extends Resource
                     ->translateLabel()
                     ->sortable()
                     ->searchable(),
-                ImageColumn::make('logo'),
+                ImageColumn::make('photo'),
                 IconColumn::make('active')
                     ->translateLabel()
                     ->boolean(),
@@ -220,9 +212,9 @@ class BranchResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListBranches::route('/'),
-            'create' => Pages\CreateBranch::route('/create'),
-            'edit' => Pages\EditBranch::route('/{record}/edit'),
+            'index' => Pages\ListClients::route('/'),
+            'create' => Pages\CreateClient::route('/create'),
+            'edit' => Pages\EditClient::route('/{record}/edit'),
         ];
     }
 }

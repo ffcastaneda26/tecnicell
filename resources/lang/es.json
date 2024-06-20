@@ -1,5 +1,9 @@
 {
-
+    "General Administrator": "Administrador General",
+    "Manager": "Gerente",
+    "Manager User": "Usuario Gerente",
+    "Countries Table": "Tabla de Países",
+    "States Table": "Tabla de Entidades Federativas",
     "Admin Panel": "Panel Administrativo",
     "Date": "Fecha",
     "User": "Usuario",
@@ -75,6 +79,10 @@
     "Branch": "Sucursal",
     "Profile": "Perfil",
     "Log Out": "Salir",
-    "Manage Account": "Gestionar Cuenta"
+    "Manage Account": "Gestionar Cuenta",
+    "Clients": "Clientes",
+    "Client": "Cliente",
+    "Creating": "Creando",
+    "Table": "Tabla"
 
 }

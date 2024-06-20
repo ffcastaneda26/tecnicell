@@ -43,6 +43,10 @@ class Company extends Model
         );
     }
 
+    public function branches(): HasMany
+    {
+        return $this->hasMany(Branch::class);
+    }
     public function clients(): HasMany
     {
         return $this->hasMany(Client::class);

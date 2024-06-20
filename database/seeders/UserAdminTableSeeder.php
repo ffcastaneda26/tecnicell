@@ -13,6 +13,8 @@ class UserAdminTableSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->command->warn(PHP_EOL . __('Creando') . ' ' . __('General Administrator') . ' ' .  __('User'));
+
         User::create([
             "name"      => "Administrador General",
             "email"     => "admin@tecnicell.com",
@@ -20,11 +22,19 @@ class UserAdminTableSeeder extends Seeder
             "active"    => 1
         ])->assignRole('Admin');
 
+        $this->command->info('Usuario administrador general creado');
+
+        $this->command->warn('Creando usuario Gerente');
+        $this->command->warn(PHP_EOL . __('Creando') . ' ' . __('Manager User'));
+
+
         User::create([
             "name"      => "Gerente Empresa Pruebas",
             "email"     => "gerente@tecnicell.com",
             "password"  => bcrypt("password"),
             "active"    => 1
-        ])->assignRole(env('APP_ROL_TO_SUSCRIPTOR','Gerente'));
+        ])->assignRole(env('APP_ROL_TO_SUSCRIPTOR',__('Manager User')));
+        $this->command->info('Usuario Gerente creado');
+
     }
 }

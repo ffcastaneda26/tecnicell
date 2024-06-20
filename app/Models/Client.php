@@ -39,4 +39,12 @@ class Client extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function country():BelongsTo
+    {
+        return $this->belongsTo(Country::class);
+    }
+    public function state():BelongsTo
+    {
+        return $this->belongsTo(State::class);
+    }
 }

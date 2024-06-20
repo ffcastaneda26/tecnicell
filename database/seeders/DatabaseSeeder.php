@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->command->warn(PHP_EOL . __('Truncando Tablas'));
         $this->truncateTables([
             'user_roles',
             'role_permissions',
@@ -25,8 +26,10 @@ class DatabaseSeeder extends Seeder
             'countries',
             'regimenes_fiscales',
             'companies',
+            'branches',
             'clients'
         ]);
+        $this->command->info('Talas Trucadas');
 
         $this->call([
             RoleAndPermissionSeeder::class,
@@ -35,6 +38,7 @@ class DatabaseSeeder extends Seeder
             StatesSeeder::class,
             RegimenFiscalSeeder::class,
             CompanySeeder::class,
+            BranchSeeder::class,
             ClientSeeder::class,
         ]);
 

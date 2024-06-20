@@ -13,6 +13,8 @@ class StatesSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->command->warn(__('Creating') . ' ' . __('States Table'));
+
         DB::table('states')->truncate();
 
         $sql="INSERT INTO `states` VALUES
@@ -48,8 +50,9 @@ class StatesSeeder extends Seeder
            (30, 'Veracruz de Ignacio de la Llav', 'Ver', 135),
            (31, 'Yucatán', 'Yuc', 135),
            (32, 'Zacatecas', 'Zac', 135)";
-
-
         DB::update($sql);
+
+       $this->command->info('States Table' . ' ' . __('Created'));
+
     }
 }

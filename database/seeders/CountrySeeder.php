@@ -13,6 +13,8 @@ class CountrySeeder extends Seeder
      */
     public function run(): void
     {
+        $this->command->warn(__('Creating') . ' ' . __('Countries Table'));
+
         $sql="INSERT INTO `countries` VALUES (1, 'ARUBA', 'ABW', 'AW', 0),
         (2, 'AFGHANISTAN', 'AFG', 'AF', 0),
         (3, 'ANGOLA', 'AGO', 'AO', 0),
@@ -252,6 +254,7 @@ class CountrySeeder extends Seeder
         (238, 'ZIMBABWE', 'ZWE', 'ZW', 0);        ";
 
        DB::update ($sql);
+       $this->command->info('Countries Table' . ' ' . __('Created'));
 
     }
 }
