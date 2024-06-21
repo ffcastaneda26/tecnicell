@@ -51,14 +51,13 @@ class UserResource extends Resource
     public static function getNavigationBadge(): ?string
     {
         if (Auth::user()->hasRole('Admin')) {
-            return static::getModel()::count();
+            return static::getModel()::role(['Admin','Gerente'])->count();
         }else{
             return static::getModel()::whereHas('companies',function($query){
                 $query->where('company_id', Auth::user()->companies->first()->id);
             })->count();
 
         }
-        return static::getModel()::count();
     }
 
 
@@ -66,22 +65,13 @@ class UserResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         if (Auth::user()->hasRole('Admin')) {
-
-            return parent::getEloquentQuery()
-                ->whereHas('roles', function ($query) {
-                    $query->whereIn('name', ['Admin', 'Gerente']);
-                });
-        }
-
-
-        if (Auth::user()->companies->count()) {
+            return parent::getEloquentQuery()->role(['Admin','Gerente']);
+        }else{
             return parent::getEloquentQuery()
                 ->whereHas('companies', function ($query) {
                     $query->where('company_id', Auth::user()->companies->first()->id);
                 });
         }
-
-        return parent::getEloquentQuery();
 
     }
     public static function form(Form $form): Form

@@ -33,7 +33,6 @@ class UserObserver
      */
     public function updated(User $user): void
     {
-        dd(Auth::user()->companies->count());
 
         if(Auth::user()->companies->count()){
             $user->companies()->sync(Auth::user()->companies->first);
