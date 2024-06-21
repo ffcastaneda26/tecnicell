@@ -23,7 +23,7 @@ class EditProduct extends EditRecord
     protected function mutateFormDataBeforeSave(array $data): array
     {
         $data['user_id'] = Auth::user()->id;
-        $data['slug'] = Str::slug($data['name']);
+        $data['company_id'] = Auth::user()->companies->first()->id;
         return $data;
     }
 

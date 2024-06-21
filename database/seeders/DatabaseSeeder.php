@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Company;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -25,6 +26,7 @@ class DatabaseSeeder extends Seeder
             'states',
             'countries',
             'regimenes_fiscales',
+            'company_user',
             'companies',
             'branches',
             'clients'
@@ -41,6 +43,7 @@ class DatabaseSeeder extends Seeder
             BranchSeeder::class,
             ClientSeeder::class,
         ]);
+
 
     }
 

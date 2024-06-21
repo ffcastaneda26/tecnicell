@@ -19,13 +19,14 @@ class RoleAndPermissionSeeder extends Seeder
         // Reset cached roles and permissions
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        $this->command->warn(PHP_EOL . __('Creating Permissions'));
+
         // create permissions
         $permissions = [
 
         ];
 
         if(count($permissions)){
+            $this->command->warn(PHP_EOL . __('Creating Permissions'));
             foreach ($permissions as $permission) {
                 Permission::create(['name' => $permission]);
             }
@@ -42,5 +43,19 @@ class RoleAndPermissionSeeder extends Seeder
         $role = Role::create(['name' => env('APP_ROL_TO_SUSCRIPTOR','Suscriptor')]);
         $this->command->info('Rol ' . env('APP_ROL_TO_SUSCRIPTOR','Suscriptor') . ' ha sido creado');
 
+        $roles = [
+            'Vendedor',
+            'Técnico',
+            'Almacenista'
+        ];
+
+        if(count($roles)){
+            $this->command->warn(PHP_EOL . ' Creando Roles Adicionales');
+            foreach ($roles as $role) {
+
+                $role = Role::create(['name' => $role]);
+                $this->command->info(PHP_EOL . ' Rol ' . $role->name . ' Creado');
+            }
+        }
     }
 }

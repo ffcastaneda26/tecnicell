@@ -51,6 +51,11 @@ class Company extends Model
     {
         return $this->hasMany(Client::class);
     }
+
+    public function products():HasMany
+    {
+        return $this->hasMany(Product::class);
+    }
     public function country():BelongsTo
     {
         return $this->belongsTo(Country::class);

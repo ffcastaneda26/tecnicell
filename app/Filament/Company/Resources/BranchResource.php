@@ -59,12 +59,24 @@ class BranchResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
+        if (!Auth::user()->hasRole('Admin')) {
+            $company = Auth::user()->companies->first();
+            return $company->branches()->count() ? $company->branches()->count() : __('There are no Branches');
+        }
+        return null;
+    }
+
+
+
+    public static function getNavigationBadgeColor(): ?string
+    {
         if(!Auth::user()->hasRole('Admin')){
             $company = Auth::user()->companies->first();
-            return $company->branches()->count();
+            return $company->branches()->count() < 1 ? 'danger' : 'success';
         }
-        return  null;
+        return null;
     }
+
 
     public static function getEloquentQuery(): Builder
     {

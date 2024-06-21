@@ -47,6 +47,15 @@ class DeviceModelResource extends Resource
         return __('Catalogs');
     }
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return static::getModel()::count() == 0 ? 'danger' : 'success';
+    }
     public static function form(Form $form): Form
     {
         return $form

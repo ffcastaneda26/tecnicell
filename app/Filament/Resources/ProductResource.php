@@ -10,17 +10,20 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Group;
+use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\Section;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Forms\Components\MarkdownEditor;
 use App\Filament\Resources\ProductResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\ProductResource\RelationManagers;
-use Filament\Forms\Components\MarkdownEditor;
-use Filament\Forms\Components\Section;
-use Filament\Tables\Columns\ImageColumn;
-use Filament\Tables\Columns\TextColumn;
 
 class ProductResource extends Resource
 {
@@ -54,11 +57,22 @@ class ProductResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-
-        if(static::getModel()::count()){
-            return static::getModel()::count();
+        if (!Auth::user()->hasRole('Admin')) {
+            $company = Auth::user()->companies->first();
+            return $company->products()->count() ? $company->products()->count() : __('There are no products');
         }
-        return '';
+        return null;
+    }
+
+
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        if (!Auth::user()->hasRole('Admin')) {
+            $company = Auth::user()->companies->first();
+            return $company->products()->count() < 1 ? 'danger' : 'success';
+        }
+        return null;
     }
 
     public static function form(Form $form): Form
@@ -66,27 +80,49 @@ class ProductResource extends Resource
 
         return $form
             ->schema([
-                Section::make()
+                Group::make()
                     ->schema([
-                        Select::make('brand_id')
-                            ->relationship('brand', 'name')
-                            ->required()
-                            ->translateLabel()
-                            ->columnSpan(1),
-                        TextInput::make('name')
-                            ->required()
-                            ->unique(ignoreRecord: true)
-                            ->maxLength(150)
-                            ->translateLabel()
-                            ->columnSpan(2),
-                    ])->columns(3),
+                        Section::make()
+                            ->schema([
+                                Select::make('brand_id')
+                                    ->relationship('brand', 'name')
+                                    ->required()
+                                    ->translateLabel()
+                                    ->columnSpan(1),
+                                Select::make('device_model_id')
+                                    ->relationship('device_model', 'name')
+                                    ->required()
+                                    ->translateLabel()
+                                    ->columnSpan(1),
+                                TextInput::make('name')
+                                    ->required()
+                                    ->unique(ignoreRecord: true)
+                                    ->maxLength(150)
+                                    ->translateLabel()
+                                    ->columnSpanFull(),
+                                TextInput::make('sku')
+                                    ->maxLength(30)
+                                    ->translateLabel(),
+                                Toggle::make('active')
+                                    ->translateLabel()
+                                    ->inline(false)
+                                    ->onIcon('heroicon-m-check-circle')
+                                    ->offIcon('heroicon-m-x-circle')
+                                    ->onColor('success')
+                                    ->offColor('danger'),
+                            ])->columns(2)
+                    ]),
+                Group::make()
+                    ->schema([
 
-                MarkdownEditor::make('description')
-                    ->translateLabel(),
-                FileUpload::make('image')
-                    ->translateLabel()
-                    ->directory('products')
-                    ->preserveFilenames(),
+                        MarkdownEditor::make('description')
+                            ->translateLabel(),
+                        FileUpload::make('image')
+                            ->translateLabel()
+                            ->directory('products')
+                            ->preserveFilenames(),
+                    ]),
+
             ]);
     }
 
@@ -95,6 +131,10 @@ class ProductResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('brand.name')
+                    ->translateLabel()
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('device_model.name')
                     ->translateLabel()
                     ->searchable()
                     ->sortable(),

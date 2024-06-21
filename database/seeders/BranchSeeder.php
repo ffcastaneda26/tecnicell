@@ -13,7 +13,10 @@ class BranchSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->command->warn('Creando Sucursales');
         Branch::factory(2)->create();
+
+        $this->command->info('Sucursales Creadas');
 
     }
 }

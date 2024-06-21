@@ -22,19 +22,28 @@ class UserAdminTableSeeder extends Seeder
             "active"    => 1
         ])->assignRole('Admin');
 
-        $this->command->info('Usuario administrador general creado');
+        $this->command->info('Usuario administrador Geberak');
 
-        $this->command->warn('Creando usuario Gerente');
-        $this->command->warn(PHP_EOL . __('Creando') . ' ' . __('Manager User'));
+        $this->command->warn('Creando usuarios  con rol de Gerente');
 
 
+        $this->command->warn(PHP_EOL . ' Creando Gerente 1');
         User::create([
-            "name"      => "Gerente Empresa Pruebas",
-            "email"     => "gerente@tecnicell.com",
-            "password"  => bcrypt("password"),
-            "active"    => 1
+            "name"      => "Gerente Empresa 1",
+            "email"     => "gerente1@empresa1.com",
+            "password"  => bcrypt("password")
         ])->assignRole(env('APP_ROL_TO_SUSCRIPTOR',__('Manager User')));
-        $this->command->info('Usuario Gerente creado');
+
+        $this->command->info('Gerente1 creado');
+
+        $this->command->warn(PHP_EOL . ' Creando Gerente 2');
+        User::create([
+            "name"      => "Gerente Empresa 2",
+            "email"     => "gerente1@empresa2.com",
+            "password"  => bcrypt("password")
+        ])->assignRole(env('APP_ROL_TO_SUSCRIPTOR',__('Manager User')));
+
+        $this->command->info('Gerente1 creado');
 
     }
 }

@@ -85,6 +85,12 @@
     "Creating": "Creando",
     "Table": "Tabla",
     "Device Statuses": "Estados de Dispositivos",
-    "Device Status": "Estado de Dispositivo"
+    "Device Status": "Estado de Dispositivo",
+    "There are no products": "No hay productos",
+    "There are no Branches": "No hay sucursales",
+    "There are no Devices": "No hay dispositivos",
+    "There are no Clients": "No hay Clientes",
+    "Sku": "Código de Barras"
+
 
 }

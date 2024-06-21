@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Brand;
+use App\Models\Company;
 use App\Models\DeviceModel;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -16,12 +17,15 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(Company::class)->comment('Empresa');
             $table->foreignIdFor(Brand::class)->comment('Marca');
+            $table->foreignIdFor(DeviceModel::class)->comment('Modelo');
             $table->string('name',150)->unique()->comment('Nombre');
-            $table->string('slug',150)->unique()->comment('Slug');
+            $table->string('sku',30)->nullable()->default(null)->comment('Código de Barras');
             $table->mediumText('description')->nullable()->comment('Descripción');
             $table->string('image')->nullable()->comment('Imagen');
             $table->foreignIdFor(User::class)->comment('Usuario que creó o modificó');
+            $table->boolean('active')->default(1)->comment('¿Activo?');
             $table->timestamps();
         });
     }

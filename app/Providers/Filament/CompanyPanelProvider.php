@@ -2,9 +2,13 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Company\Resources\ClientResource;
+use App\Filament\Resources\BrandResource;
 use App\Filament\Resources\CompanyResource;
+use App\Filament\Resources\DeviceModelResource;
 use App\Filament\Resources\ProductResource;
 use App\Filament\Resources\UserResource;
+use App\Models\DeviceModel;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -45,9 +49,12 @@ class CompanyPanelProvider extends PanelProvider
                 Widgets\FilamentInfoWidget::class,
             ])
             ->resources([
-                UserResource::class,
                 CompanyResource::class,
+                UserResource::class,
+                BrandResource::class,
+                DeviceModelResource::class,
                 ProductResource::class,
+                ClientResource::class,
             ])
             ->middleware([
                 EncryptCookies::class,

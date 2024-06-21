@@ -59,13 +59,23 @@ class ClientResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        if(!Auth::user()->hasRole('Admin')){
+        if (!Auth::user()->hasRole('Admin')) {
             $company = Auth::user()->companies->first();
-            return $company->clients()->count();
+            return $company->clients()->count() ? $company->clients()->count() : __('There are no Clients');
         }
-        return  null;
+        return null;
     }
 
+
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        if(!Auth::user()->hasRole('Admin')){
+            $company = Auth::user()->companies->first();
+            return $company->branches()->count() < 1 ? 'danger' : 'success';
+        }
+        return null;
+    }
     public static function getEloquentQuery(): Builder
     {
 
