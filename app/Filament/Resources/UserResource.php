@@ -118,7 +118,7 @@ class UserResource extends Resource
                         ->relationship(
                             name: 'roles',
                             titleAttribute: 'name',
-                            modifyQueryUsing: fn(Builder $query) => $query->whereNotIn('name', ['Admin', 'Gerente'])
+                            modifyQueryUsing: fn(Builder $query) => $query->whereNotIn('name', ['Admin'])
                         )
                         ->translateLabel()
                         ->preload()
