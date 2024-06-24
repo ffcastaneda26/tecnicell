@@ -90,7 +90,11 @@
     "There are no Branches": "No hay sucursales",
     "There are no Devices": "No hay dispositivos",
     "There are no Clients": "No hay Clientes",
-    "Sku": "Código de Barras"
+    "Sku": "Código de Barras",
+    "Log in": "Ingresar",
+    "Password": "Clave",
+    "Remember me": "Recordarme",
+    "Forgot your password?": "¿Olvidó su clave?"
 
 
 }

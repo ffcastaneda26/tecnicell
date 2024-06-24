@@ -38,11 +38,22 @@ class JetstreamServiceProvider extends ServiceProvider
         Jetstream::defaultApiTokenPermissions(['read']);
 
         Fortify::authenticateUsing(function (Request $request) {
-            $user = User::where('email', $request->email)->first();
-
-             if ($user && $user->active && Hash::check($request->password, $user->password)) {
-                return $user;
+            $user = User::where('email', $request->email)
+                        ->where('active',1)
+                        ->first();
+                        
+            if($user && $user->companies->count()){
+                if($user->companies->first()->active){
+                    if (Hash::check($request->password, $user->password)) {
+                        return $user;
+                    }
+                }
+            }else{
+                if ($user && $user->active && Hash::check($request->password, $user->password)) {
+                    return $user;
+                }
             }
+
         });
         Jetstream::permissions([
             'create',

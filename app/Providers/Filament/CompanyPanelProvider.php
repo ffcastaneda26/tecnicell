@@ -26,6 +26,7 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class CompanyPanelProvider extends PanelProvider
 {
@@ -44,6 +45,7 @@ class CompanyPanelProvider extends PanelProvider
                 ->label(__('Dashboard'))
                 ->icon('heroicon-o-home')
                 ->url('/dashboard')
+                ->visible(fn(): bool => Auth::user()->companies->count() && Auth::user()->companies->first()->active)
             ])
             ->discoverResources(in: app_path('Filament/Company/Resources'), for: 'App\\Filament\\Company\\Resources')
             ->discoverPages(in: app_path('Filament/Company/Pages'), for: 'App\\Filament\\Company\\Pages')

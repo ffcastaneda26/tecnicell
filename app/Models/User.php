@@ -83,6 +83,7 @@ class User extends Authenticatable implements FilamentUser
         if (Auth::check()) {
             if(!$this->active){
                 Auth::logout();
+                redirect('/');
             }
         }
 

@@ -135,7 +135,7 @@
                             @endrole
 
                             @role(env('APP_ROL_TO_SUSCRIPTOR','Gerente'))
-                                <x-dropdown-link href="/company">
+                                <x-dropdown-link href="/company" class="{{ Auth::user()->companies->first()->active ? '' : 'hidden' }}">
                                     {{ __('Admin Panel') }}
                                 </x-dropdown-link>
                             @endrole

@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'failed' => 'Credenciales INCORRECTAS o usuario no está Activo',
+    'failed' => 'Credenciales INCORRECTAS, Usuario o Empresa Inactivos',
     'throttle' => 'Demasiados intentos de acceso. Por favor inténtelo de nuevo en :seconds segundos.',
 
 ];
