@@ -34,13 +34,14 @@ class UserResource extends Resource
     /** Si desea quita rel cluster descomentar las líneas siguientes */
     public static function getNavigationGroup(): string
     {
-        return __('Security');
+        return Auth::user()->hasRole('Admin') ?  __('Security') : '';
     }
 
     public static function getModelLabel(): string
     {
         return __('User');
     }
+
 
 
     public static function getPluralLabel(): ?string
