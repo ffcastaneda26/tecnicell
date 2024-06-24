@@ -4,21 +4,25 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use Filament\Panel;
 use App\Observers\UserObserver;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Jetstream\HasProfilePhoto;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
+use Filament\Models\Contracts\FilamentUser;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Spatie\Permission\Models\Role;
+use Illuminate\Http\RedirectResponse;
 
 // #[ObservedBy([UserObserver::class])]
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
     use HasApiTokens;
     use HasFactory;
@@ -73,6 +77,30 @@ class User extends Authenticatable
         ];
     }
 
+    public function canAccessPanel(Panel $panel): bool
+    {
+
+        if (Auth::check()) {
+            if(!$this->active){
+                Auth::logout();
+            }
+        }
+
+        if(!$this->active){
+            return false;
+        }
+
+        if ($panel->getId() === 'admin') {
+            return $this->hasRole('Admin') && $this->active;
+        }
+
+        if ($panel->getId() === 'company') {
+            return $this->hasRole(env('APP_ROL_TO_SUSCRIPTOR', 'Gerente')) && $this->active;
+        }
+
+        return false;
+    }
+
     public function clients(): HasMany
     {
         return $this->hasMany(Client::class);
@@ -80,13 +108,13 @@ class User extends Authenticatable
     public function roles_gerente(): HasMany
     {
         return $this->hasMany(Role::class)
-            ->whereNotIn('id',[1]);
+            ->whereNotIn('id', [1]);
     }
 
     public function roles_admin(): HasMany
     {
         return $this->hasMany(Role::class)
-            ->whereIn('id',[1,2]);
+            ->whereIn('id', [1, 2]);
     }
 
     public function products(): HasMany
@@ -94,7 +122,7 @@ class User extends Authenticatable
         return $this->hasMany(Product::class);
     }
 
-    public function companies_updated():HasMany
+    public function companies_updated(): HasMany
     {
         return $this->hasMany(Company::class);
     }

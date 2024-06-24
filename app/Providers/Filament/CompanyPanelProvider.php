@@ -12,6 +12,7 @@ use App\Models\DeviceModel;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\MenuItem;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -31,12 +32,18 @@ class CompanyPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->brandName(fn()=> Auth::user()->companies->first()->name)
+            ->brandName(fn()=> Auth::check() && Auth::user()->companies->count() ? Auth::user()->companies->first()->name : '')
             ->id('company')
             ->path('company')
             ->login()
             ->colors([
                 'primary' => Color::Green,
+            ])
+            ->userMenuItems([
+                MenuItem::make()
+                ->label(__('Dashboard'))
+                ->icon('heroicon-o-home')
+                ->url('/dashboard')
             ])
             ->discoverResources(in: app_path('Filament/Company/Resources'), for: 'App\\Filament\\Company\\Resources')
             ->discoverPages(in: app_path('Filament/Company/Pages'), for: 'App\\Filament\\Company\\Pages')
