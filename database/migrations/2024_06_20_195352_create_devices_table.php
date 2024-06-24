@@ -1,14 +1,15 @@
 <?php
 
-use App\Models\Branch;
+use App\Models\User;
 use App\Models\Brand;
+use App\Models\Branch;
 use App\Models\Company;
+use App\Models\DeviceType;
 use App\Models\DeviceModel;
 use App\Models\DeviceStatus;
-use App\Models\DeviceType;
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -27,6 +28,7 @@ return new class extends Migration
             $table->string('imei',50)->nullable()->default(null)->comment('Código IMEI');
             $table->foreignIdFor(DeviceStatus::class)->comment('Estado');
             $table->mediumText('notes')->nullable()->default(null)->comment('Notas');
+            $table->foreignIdFor(User::class)->comment('Usuario que creó o modificó');
         });
     }
 

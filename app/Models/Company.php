@@ -56,6 +56,11 @@ class Company extends Model
     {
         return $this->hasMany(Product::class);
     }
+
+    public function devices(): HasMany
+    {
+        return $this->hasMany(Device::class);
+    }
     public function country():BelongsTo
     {
         return $this->belongsTo(Country::class);
@@ -75,6 +80,7 @@ class Company extends Model
     {
         return $this->belongsToMany(User::class);
     }
+
 
 
 

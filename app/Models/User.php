@@ -133,4 +133,9 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->belongsToMany(Company::class);
     }
+
+    public function devices(): HasMany
+    {
+        return $this->hasMany(Device::class);
+    }
 }

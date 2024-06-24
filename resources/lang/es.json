@@ -94,7 +94,15 @@
     "Log in": "Ingresar",
     "Password": "Clave",
     "Remember me": "Recordarme",
-    "Forgot your password?": "¿Olvidó su clave?"
+    "Forgot your password?": "¿Olvidó su clave?",
+    "Devices": "Dispositivos",
+    "Device": "Dispositivo",
+    "Device type id": "Tipo",
+    "Device model id": "Modelo",
+    "Status": "Estado",
+    "Imei": "IMEI",
+    "Serial number": "Número de Serie",
+    "Notes": "Notas"
 
 
 }

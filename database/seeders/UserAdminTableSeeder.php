@@ -30,7 +30,7 @@ class UserAdminTableSeeder extends Seeder
         $this->command->warn(PHP_EOL . ' Creando Gerente 1');
         User::create([
             "name"      => "Gerente Empresa 1",
-            "email"     => "gerente1@empresa1.com",
+            "email"     => "gerente@empresa1.com",
             "password"  => bcrypt("password")
         ])->assignRole(env('APP_ROL_TO_SUSCRIPTOR',__('Manager User')));
 
@@ -39,7 +39,7 @@ class UserAdminTableSeeder extends Seeder
         $this->command->warn(PHP_EOL . ' Creando Gerente 2');
         User::create([
             "name"      => "Gerente Empresa 2",
-            "email"     => "gerente1@empresa2.com",
+            "email"     => "gerente@empresa2.com",
             "password"  => bcrypt("password")
         ])->assignRole(env('APP_ROL_TO_SUSCRIPTOR',__('Manager User')));
 

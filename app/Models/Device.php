@@ -21,6 +21,7 @@ class Device extends Model
         'imei',
         'device_status_id',
         'notes',
+        'user_id',
     ];
 
     public function company():BelongsTo
@@ -34,14 +35,19 @@ class Device extends Model
 
     public function type():BelongsTo
     {
-        return $this->belongsTo(DeviceType::class);
+        return $this->belongsTo(DeviceType::class,'device_type_id');
     }
     public function model():BelongsTo
     {
-        return $this->belongsTo(DeviceModel::class);
+        return $this->belongsTo(DeviceModel::class,'device_model_id');
     }
     public function status():BelongsTo
     {
-        return $this->belongsTo(DeviceStatus::class);
+        return $this->belongsTo(DeviceStatus::class,'device_status_id');
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }
