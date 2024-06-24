@@ -44,4 +44,4 @@ class Device extends Model
     {
         return $this->belongsTo(DeviceStatus::class);
     }
-}*
+}

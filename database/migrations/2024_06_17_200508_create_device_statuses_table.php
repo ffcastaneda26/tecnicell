@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('device_statuses', function (Blueprint $table) {
             $table->id();
-            $table->string('name',30)->comment('Estado');
+            $table->string('spanish',30)->comment('Español');
+            $table->string('english',30)->comment('Inglés');
+
         });
     }
 
