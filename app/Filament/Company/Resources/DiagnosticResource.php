@@ -9,7 +9,6 @@ use App\Models\Device;
 use Filament\Forms\Form;
 use App\Models\Diagnostic;
 use Filament\Tables\Table;
-use Faker\Provider\ar_EG\Text;
 use Filament\Resources\Resource;
 use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Select;
