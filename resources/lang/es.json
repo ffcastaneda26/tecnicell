@@ -92,6 +92,8 @@
     "There are no Devices": "No hay dispositivos",
     "There are no Clients": "No hay Clientes",
     "There are no Diagnostics": "No hay Diatnósticos",
+    "There are no Diagnostics Statuses": "No hay Estados de Diagnósticos",
+
     "Sku": "Código de Barras",
     "Log in": "Ingresar",
     "Password": "Clave",
@@ -111,5 +113,7 @@
     "Techincal id": "Técnico",
     "Diagnosis": "Diagnóstico",
     "Created at": "Creado",
-    "Updated at": "Actualizado"
+    "Updated at": "Actualizado",
+    "Cotization Statuses": "Estados de Cotizaciones",
+    "Cotization Status": "Estado de Cotización"
 }
