@@ -128,6 +128,8 @@ class DeviceResource extends Resource
                                 ->pluck('name', 'id'))
                             ->required(),
                         Select::make('device_status_id')
+                            ->translateLabel()
+
                             ->options(function (): array {
                                 if (App::isLocale('en')) {
                                     return DeviceStatus::all()->pluck('english', 'id')->all();
@@ -155,10 +157,6 @@ class DeviceResource extends Resource
                     ]),
                 MarkdownEditor::make('notes')
                     ->translateLabel()
-
-
-
-
             ]);
     }
 
@@ -187,7 +185,7 @@ class DeviceResource extends Resource
                     ->translateLabel()
                     ->sortable()
                     ->searchable(),
-                TextColumn::make('status'.ExcellsusTrait::getAttributeLanguage())
+                TextColumn::make('status' . ExcellsusTrait::getAttributeLanguage())
                     ->label(__('Status'))
                     ->sortable()
                     ->searchable(),

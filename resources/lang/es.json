@@ -21,6 +21,7 @@
     "Short": "Corto",
     "Logotipo": "Logo",
     "Catalogs": "Catálogos",
+    "Processes": "Procesos",
     "Start": "Inicio",
     "Finish": "Final",
     "Type": "Tipo",
@@ -90,6 +91,7 @@
     "There are no Branches": "No hay sucursales",
     "There are no Devices": "No hay dispositivos",
     "There are no Clients": "No hay Clientes",
+    "There are no Diagnostics": "No hay Diatnósticos",
     "Sku": "Código de Barras",
     "Log in": "Ingresar",
     "Password": "Clave",
@@ -99,10 +101,15 @@
     "Device": "Dispositivo",
     "Device type id": "Tipo",
     "Device model id": "Modelo",
+    "Device status id": "Estado",
     "Status": "Estado",
     "Imei": "IMEI",
     "Serial number": "Número de Serie",
-    "Notes": "Notas"
-
-
+    "Notes": "Notas",
+    "Diagnostics": "Diagnósticos",
+    "Diagnostic": "Diagnóstico",
+    "Techincal id": "Técnico",
+    "Diagnosis": "Diagnóstico",
+    "Created at": "Creado",
+    "Updated at": "Actualizado"
 }

@@ -103,10 +103,21 @@ class User extends Authenticatable implements FilamentUser
         return false;
     }
 
+    public function companies_updated(): HasMany
+    {
+        return $this->hasMany(Company::class);
+    }
+
     public function clients(): HasMany
     {
         return $this->hasMany(Client::class);
     }
+
+    public function diagnostics(): HasMany
+    {
+        return $this->hasMany(Diagnostic::class);
+    }
+
     public function roles_gerente(): HasMany
     {
         return $this->hasMany(Role::class)
@@ -124,10 +135,6 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Product::class);
     }
 
-    public function companies_updated(): HasMany
-    {
-        return $this->hasMany(Company::class);
-    }
 
     public function companies(): BelongsToMany
     {

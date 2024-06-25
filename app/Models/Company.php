@@ -66,6 +66,11 @@ class Company extends Model
         return $this->belongsTo(Country::class);
     }
 
+    public function diagnostics(): HasMany
+    {
+        return $this->hasMany(Diagnostic::class);
+    }
+
     public function state():BelongsTo
     {
         return $this->belongsTo(State::class);

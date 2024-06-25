@@ -31,12 +31,12 @@ class CompanySeeder extends Seeder
 
         // Gerente para empresa 1
         $company= Company::findOrFail(1);
-        $user= User::where('email','gerente1@empresa1.com')->first();
+        $user= User::where('email','gerente@empresa1.com')->first();
         $user->companies()->sync($company->id);
 
         // Gerente para empresa 2
         $company= Company::findOrFail(2);
-        $user= User::where('email','gerente1@empresa2.com')->first();
+        $user= User::where('email','gerente@empresa2.com')->first();
         $user->companies()->sync($company->id);
 
         $this->command->info('Empresas Asignadas a Usuarios con Rol Gerente');
