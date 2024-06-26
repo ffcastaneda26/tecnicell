@@ -20,9 +20,9 @@ class Cotization extends Model
         'client_id',
         'device_id',
         'description',
+        'cotization_status_id',
         'estimated_cost',
         'client_approved',
-        'cotization_status_id',
         'approval_date'
     ];
 
