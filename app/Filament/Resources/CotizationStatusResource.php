@@ -21,7 +21,7 @@ class CotizationStatusResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-list-bullet';
     protected static ?string $activeNavigationIcon = 'heroicon-s-shield-check';
-    protected static ?int $navigationSort = 9;
+    protected static ?int $navigationSort = 4;
 
     public static function getModelLabel(): string
     {
@@ -43,11 +43,11 @@ class CotizationStatusResource extends Resource
     {
         return __('Catalogs');
     }
-    public static function getNavigationBadge(): ?string
-    {
-        return static::getModel()::count() ? static::getModel()::count() : '';
+    // public static function getNavigationBadge(): ?string
+    // {
+    //     return static::getModel()::count() ? static::getModel()::count() : '';
 
-    }
+    // }
 
     public static function form(Form $form): Form
     {

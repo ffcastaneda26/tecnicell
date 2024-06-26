@@ -21,7 +21,7 @@ class DeviceStatusResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-battery-50';
     protected static ?string $activeNavigationIcon = 'heroicon-s-shield-check';
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 3;
 
     public static function getModelLabel(): string
     {
@@ -49,7 +49,12 @@ class DeviceStatusResource extends Resource
         return $form
             ->schema([
 
-                TextInput::make('name')
+                TextInput::make('spanish')
+                    ->required()
+                    ->translateLabel()
+                    ->maxLength(30),
+
+                TextInput::make('english')
                     ->required()
                     ->translateLabel()
                     ->maxLength(30)
@@ -60,7 +65,11 @@ class DeviceStatusResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')
+                TextColumn::make('spanish')
+                    ->translateLabel()
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('english')
                     ->translateLabel()
                     ->sortable()
                     ->searchable(),

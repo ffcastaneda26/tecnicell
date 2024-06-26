@@ -5,7 +5,9 @@ namespace App\Providers\Filament;
 use App\Filament\Company\Resources\ClientResource;
 use App\Filament\Resources\BrandResource;
 use App\Filament\Resources\CompanyResource;
+use App\Filament\Resources\CotizationStatusResource;
 use App\Filament\Resources\DeviceModelResource;
+use App\Filament\Resources\DeviceStatusResource;
 use App\Filament\Resources\ProductResource;
 use App\Filament\Resources\UserResource;
 use App\Models\DeviceModel;
@@ -61,7 +63,10 @@ class CompanyPanelProvider extends PanelProvider
                 CompanyResource::class,
                 UserResource::class,
                 BrandResource::class,
+                DeviceStatusResource::class,
+                CotizationStatusResource::class,
                 DeviceModelResource::class,
+
                 ProductResource::class,
                 ClientResource::class,
             ])
