@@ -13,6 +13,7 @@ class Diagnostic extends Model
     use HasFactory;
     protected $table='diagnostics';
     protected $fillable = [
+        'branch_id',
         'device_id',
         'date',
         'techincal_id',
@@ -31,6 +32,11 @@ class Diagnostic extends Model
     public function company():BelongsTo
     {
         return $this->belongsTo(Company::class);
+    }
+
+    public function branch():BelongsTo
+    {
+        return $this->belongsTo(Branch::class);
     }
 
     public function techincal(): BelongsTo

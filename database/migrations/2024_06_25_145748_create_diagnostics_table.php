@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Branch;
 use App\Models\Company;
 use App\Models\Device;
 use App\Models\User;
@@ -17,6 +18,7 @@ return new class extends Migration
         Schema::create('diagnostics', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Company::class)->comment('Empresa');
+            $table->foreignIdFor(Branch::class)->comment('Sucursal');
             $table->foreignIdFor(Device::class)->comment('Diagnóstico');
             $table->timestamp('date')->comment('Fecha del diagnóstico');
             $table->unsignedBigInteger('techincal_id')->comment('Técnico asignado');

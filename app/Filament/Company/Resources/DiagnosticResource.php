@@ -5,6 +5,7 @@ namespace App\Filament\Company\Resources;
 use Filament\Forms;
 use App\Models\User;
 use Filament\Tables;
+use App\Models\Branch;
 use App\Models\Device;
 use Filament\Forms\Form;
 use App\Models\Diagnostic;
@@ -19,6 +20,7 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Columns\CheckboxColumn;
 use Filament\Forms\Components\MarkdownEditor;
@@ -79,6 +81,11 @@ class DiagnosticResource extends Resource
             ->schema([
                 Section::make()
                     ->schema([
+                        Select::make('branch_id')
+                            ->relationship('branch', 'name')
+                            ->required()
+                            ->translateLabel()
+                            ->options(Branch::query()->where('company_id', Auth::user()->companies->first()->id)->pluck('name', 'id')),
                         Select::make('device_id')
                             ->translateLabel()
                             ->relationship('device', 'serial_number')
@@ -99,16 +106,17 @@ class DiagnosticResource extends Resource
                         Toggle::make('active')
                             ->translateLabel(),
 
-                    ])->columns(4),
-                Textarea::make('diagnosis')
-                    ->required()
-                    ->translateLabel()
-                    ->columnSpanFull(),
+                    ])->columns(5),
+
                 // TODO:: Dejar textarea o MarkdownEditor
                 MarkdownEditor::make('diagnosis')
                     ->required()
                     ->translateLabel()
                     ->columnSpanFull(),
+                // Textarea::make('diagnosis')
+                //     ->required()
+                //     ->translateLabel()
+                //     ->columnSpanFull(),
             ]);
     }
 
@@ -116,6 +124,10 @@ class DiagnosticResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('branch.name')
+                    ->translateLabel()
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('date')
                     ->translateLabel()
                     ->searchable()
@@ -136,20 +148,13 @@ class DiagnosticResource extends Resource
 
                 IconColumn::make('active')->translateLabel()->boolean(),
 
-                // TextColumn::make('created_at')
-                //     ->translateLabel()
-                //     ->searchable()
-                //     ->sortable()
-                //     ->since(),
-                // TextColumn::make('updated_at')
-                //     ->translateLabel()
-                //     ->searchable()
-                //     ->sortable()
-                //     ->since(),
-
             ])
             ->filters([
-                //
+                SelectFilter::make('branch')
+                    ->relationship('branch', 'name')
+                    ->translateLabel()
+                    ->searchable()
+                    ->preload()
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
