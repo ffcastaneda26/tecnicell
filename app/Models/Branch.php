@@ -46,7 +46,10 @@ class Branch extends Model
     {
         return $this->hasMany(Diagnostic::class);
     }
-
+    public function cotizations(): HasMany
+    {
+        return $this->hasMany(Cotization::class);
+    }
     public function company():BelongsTo
     {
         return $this->belongsTo(Company::class);

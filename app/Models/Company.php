@@ -71,6 +71,11 @@ class Company extends Model
         return $this->hasMany(Diagnostic::class);
     }
 
+    public function cotizations(): HasMany
+    {
+        return $this->hasMany(Cotization::class);
+    }
+
     public function state():BelongsTo
     {
         return $this->belongsTo(State::class);

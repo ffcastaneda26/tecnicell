@@ -116,5 +116,10 @@
     "Created at": "Creado",
     "Updated at": "Actualizado",
     "Cotization Statuses": "Estados de Cotizaciones",
-    "Cotization Status": "Estado de Cotización"
+    "Cotization Status": "Estado de Cotización",
+    "Cotizations": "Cotizaciones",
+    "Cotization": "Cotización",
+    "Estimated cost": "Costo Estimado",
+    "Client approved": "¿Aprobado por el Cliente?",
+    "Approval date": "Aprobado el"
 }

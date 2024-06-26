@@ -2,53 +2,55 @@
 
 namespace App\Filament\Company\Resources;
 
+use App\ExcellsusTrait;
 use Filament\Forms;
-use App\Models\User;
 use Filament\Tables;
 use App\Models\Branch;
+use App\Models\Client;
 use App\Models\Device;
 use Filament\Forms\Form;
-use App\Models\Diagnostic;
+use App\Models\Cotization;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
-use Filament\Tables\Columns\CheckboxColumn;
 use Filament\Forms\Components\MarkdownEditor;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Company\Resources\DiagnosticResource\Pages;
-use App\Filament\Company\Resources\DiagnosticResource\RelationManagers;
+use App\Filament\Company\Resources\CotizationResource\Pages;
+use App\Filament\Company\Resources\CotizationResource\RelationManagers;
+use App\Models\CotizationStatus;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Group;
+use Illuminate\Support\Facades\App;
 
-class DiagnosticResource extends Resource
+class CotizationResource extends Resource
 {
-    protected static ?string $model = Diagnostic::class;
+    protected static ?string $model = Cotization::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-wrench';
+    protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
     protected static ?string $activeNavigationIcon = 'heroicon-s-shield-check';
-    protected static ?int $navigationSort = 10;
+    protected static ?int $navigationSort = 11;
 
 
     public static function getModelLabel(): string
     {
-        return __('Diagnostic');
+        return __('Cotization');
     }
 
     public static function getNavigationLabel(): string
     {
-        return __('Diagnostics');
+        return __('Cotizations');
     }
     public static function getPluralLabel(): ?string
     {
-        return __('Diagnostics');
+        return __('Cotizations');
 
     }
     public static function getNavigationGroup(): string
@@ -60,7 +62,7 @@ class DiagnosticResource extends Resource
     {
         if (!Auth::user()->hasRole('Admin')) {
             $company = Auth::user()->companies->first();
-            return $company->diagnostics()->count() ? $company->devices()->count() : __('There are no Diagnostics');
+            return $company->cotizations()->count() ? $company->devices()->count() : '';
         }
         return null;
     }
@@ -86,6 +88,13 @@ class DiagnosticResource extends Resource
                             ->required()
                             ->translateLabel()
                             ->options(Branch::query()->where('company_id', Auth::user()->companies->first()->id)->pluck('name', 'id')),
+                        Select::make('client_id')
+                            ->translateLabel()
+                            ->relationship('client', 'name')
+                            ->options(Client::query()->where('company_id', Auth::user()->companies->first()->id)->pluck('name', 'id'))
+                            ->required()
+                            ->searchable()
+                            ->translateLabel(),
                         Select::make('device_id')
                             ->translateLabel()
                             ->relationship('device', 'serial_number')
@@ -93,26 +102,55 @@ class DiagnosticResource extends Resource
                             ->required()
                             ->searchable()
                             ->translateLabel(),
-                        DatePicker::make('date')
+                        TextInput::make('estimated_cost')
+                            ->required()
+                            ->minValue(1.00)
                             ->translateLabel()
-                            ->required(),
-                        // TODO:: Revisar si solos e deben asignar usuarios con rol de técnico
-                        Select::make('techincal_id')
+                            ->numeric()
+                            ->prefixIcon('heroicon-o-currency-dollar'),
+
+
+                    ])->columns(4),
+                Group::make()
+                    ->schema([
+                        MarkdownEditor::make('description')
                             ->required()
                             ->translateLabel()
-                            ->options(User::query()->wherehas('companies', function ($query) {
-                                $query->where('company_id', Auth::user()->companies->first()->id);
-                            })->pluck('name', 'id')),
-                        Toggle::make('active')
-                            ->translateLabel(),
+                            ->columns(2),
 
-                    ])->columns(5),
+                    ]),
+                Group::make()
+                    ->schema([
+                        Select::make('cotization_status_id')
+                            ->options(function (): array {
+                                if (App::isLocale('en')) {
+                                    return CotizationStatus::all()->pluck('english', 'id')->all();
+                                } else {
+                                    return CotizationStatus::all()->pluck('spanish', 'id')->all();
+                                }
+                            })
+                            ->required()
+                            ->translateLabel()
+                            ->columns(1),
+                        Section::make()
+                            ->schema([
+                                Toggle::make('client_approved')
+                                    ->translateLabel()
+                                    ->disabled(),
+                                DatePicker::make('approval_date')
+                                    ->translateLabel()
+                                    ->disabled(),
+                            ])->columns(2),
 
-                // TODO:: Dejar textarea o MarkdownEditor
-                MarkdownEditor::make('diagnosis')
-                    ->required()
-                    ->translateLabel()
-                    ->columnSpanFull(),
+                        // Section::make()
+                        //     ->schema([
+
+
+                        //     ])->columns(2),
+                    ]),
+
+
+
             ]);
     }
 
@@ -124,7 +162,11 @@ class DiagnosticResource extends Resource
                     ->translateLabel()
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('date')
+                TextColumn::make('client.name')
+                    ->translateLabel()
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('create_at')
                     ->translateLabel()
                     ->searchable()
                     ->sortable()
@@ -138,14 +180,27 @@ class DiagnosticResource extends Resource
                     ->translateLabel()
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('diagnosis')
+                TextColumn::make('description')
                     ->translateLabel()
                     ->limit(50),
-
-                IconColumn::make('active')->translateLabel()->boolean(),
+                TextColumn::make('status' . ExcellsusTrait::getAttributeLanguage())
+                    ->label(__('Status'))
+                    ->sortable()
+                    ->searchable(),
+                IconColumn::make('client_approved')->translateLabel()->boolean(),
 
             ])
             ->filters([
+                SelectFilter::make('branch')
+                    ->relationship('branch', 'name')
+                    ->translateLabel()
+                    ->searchable()
+                    ->preload(),
+                SelectFilter::make('client')
+                    ->relationship('client', 'name')
+                    ->translateLabel()
+                    ->searchable()
+                    ->preload(),
                 SelectFilter::make('branch')
                     ->relationship('branch', 'name')
                     ->translateLabel()
@@ -172,9 +227,9 @@ class DiagnosticResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListDiagnostics::route('/'),
-            'create' => Pages\CreateDiagnostic::route('/create'),
-            'edit' => Pages\EditDiagnostic::route('/{record}/edit'),
+            'index' => Pages\ListCotizations::route('/'),
+            'create' => Pages\CreateCotization::route('/create'),
+            'edit' => Pages\EditCotization::route('/{record}/edit'),
         ];
     }
 }
