@@ -29,7 +29,10 @@ class Device extends Model
     {
         return $this->hasMany(Diagnostic::class);
     }
-
+    public function reparations(): HasMany
+    {
+        return $this->hasMany(Reparation::class);
+    }
     public function company():BelongsTo
     {
         return $this->belongsTo(Company::class);

@@ -34,7 +34,7 @@ class DiagnosticResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-wrench';
     protected static ?string $activeNavigationIcon = 'heroicon-s-shield-check';
-    protected static ?int $navigationSort = 10;
+    protected static ?int $navigationSort = 11;
 
 
     public static function getModelLabel(): string

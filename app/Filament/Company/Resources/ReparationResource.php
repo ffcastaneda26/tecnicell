@@ -2,55 +2,54 @@
 
 namespace App\Filament\Company\Resources;
 
-use App\ExcellsusTrait;
+use App\ExcellsusClass;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Branch;
 use App\Models\Client;
 use App\Models\Device;
+use App\ExcellsusTrait;
 use Filament\Forms\Form;
-use App\Models\Cotization;
+use App\Models\Reparation;
 use Filament\Tables\Table;
+use App\Models\ReparationStatus;
 use Filament\Resources\Resource;
+use Illuminate\Support\Facades\App;
+use Filament\Forms\Components\Group;
 use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Section;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\MarkdownEditor;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Company\Resources\CotizationResource\Pages;
-use App\Filament\Company\Resources\CotizationResource\RelationManagers;
-use App\Models\CotizationStatus;
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Group;
-use Illuminate\Support\Facades\App;
+use App\Filament\Company\Resources\ReparationResource\Pages;
+use App\Filament\Company\Resources\ReparationResource\RelationManagers;
 
-class CotizationResource extends Resource
+class ReparationResource extends Resource
 {
-    protected static ?string $model = Cotization::class;
+    protected static ?string $model = Reparation::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
+    protected static ?string $navigationIcon = 'heroicon-o-wrench-screwdriver';
     protected static ?string $activeNavigationIcon = 'heroicon-s-shield-check';
-    protected static ?int $navigationSort = 10;
+    protected static ?int $navigationSort = 12;
 
 
     public static function getModelLabel(): string
     {
-        return __('Cotization');
+        return __('Reparation');
     }
 
     public static function getNavigationLabel(): string
     {
-        return __('Cotizations');
+        return __('Reparations');
     }
     public static function getPluralLabel(): ?string
     {
-        return __('Cotizations');
+        return __('Reparations');
 
     }
     public static function getNavigationGroup(): string
@@ -61,7 +60,7 @@ class CotizationResource extends Resource
     {
         if (!Auth::user()->hasRole('Admin')) {
             $company = Auth::user()->companies->first();
-            return $company->cotizations()->count() ? $company->devices()->count() : '';
+            return $company->reparations()->count() ? $company->devices()->count() : '';
         }
         return null;
     }
@@ -101,7 +100,7 @@ class CotizationResource extends Resource
                             ->required()
                             ->searchable()
                             ->translateLabel(),
-                        TextInput::make('estimated_cost')
+                        TextInput::make('cost')
                             ->required()
                             ->minValue(1.00)
                             ->translateLabel()
@@ -112,7 +111,7 @@ class CotizationResource extends Resource
                     ])->columns(4),
                 Group::make()
                     ->schema([
-                        MarkdownEditor::make('description')
+                        MarkdownEditor::make('notes')
                             ->required()
                             ->translateLabel()
                             ->columns(2),
@@ -120,32 +119,23 @@ class CotizationResource extends Resource
                     ]),
                 Group::make()
                     ->schema([
-                        Select::make('cotization_status_id')
+                        DatePicker::make('start_date')
+                            ->translateLabel()
+                            ->required(),
+                        DatePicker::make('finish_date')
+                            ->translateLabel()
+                            ->required(),
+                        Select::make('reparation_status_id')
+                            ->relationship('status')
                             ->options(function (): array {
                                 if (App::isLocale('en')) {
-                                    return CotizationStatus::all()->pluck('english', 'id')->all();
+                                    return ReparationStatus::all()->pluck('english', 'id')->all();
                                 } else {
-                                    return CotizationStatus::all()->pluck('spanish', 'id')->all();
+                                    return ReparationStatus::all()->pluck('spanish', 'id')->all();
                                 }
                             })
                             ->required()
-                            ->translateLabel()
-                            ->columns(1),
-                        Section::make()
-                            ->schema([
-                                Toggle::make('client_approved')
-                                    ->translateLabel()
-                                    ->disabled(),
-                                DatePicker::make('approval_date')
-                                    ->translateLabel()
-                                    ->disabled(),
-                            ])->columns(2),
-
-                        // Section::make()
-                        //     ->schema([
-
-
-                        //     ])->columns(2),
+                            ->translateLabel(),
                     ]),
 
 
@@ -179,7 +169,7 @@ class CotizationResource extends Resource
                     ->translateLabel()
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('description')
+                TextColumn::make('notes')
                     ->translateLabel()
                     ->limit(50),
                 TextColumn::make('status.spanish')
@@ -188,7 +178,6 @@ class CotizationResource extends Resource
                 TextColumn::make('status.english')
                     ->translateLabel()
                     ->visible(App::isLocale('en')),
-                IconColumn::make('client_approved')->translateLabel()->boolean(),
 
             ])
             ->filters([
@@ -228,9 +217,14 @@ class CotizationResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCotizations::route('/'),
-            'create' => Pages\CreateCotization::route('/create'),
-            'edit' => Pages\EditCotization::route('/{record}/edit'),
+            'index' => Pages\ListReparations::route('/'),
+            'create' => Pages\CreateReparation::route('/create'),
+            'edit' => Pages\EditReparation::route('/{record}/edit'),
         ];
+    }
+
+    public static function getStatusLabel(): string
+    {
+        return App::isLocale('en') ? 'english' : 'spanish';
     }
 }

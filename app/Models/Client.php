@@ -36,6 +36,11 @@ class Client extends Model
     {
         return $this->hasMany(Cotization::class);
     }
+
+    public function reparations(): HasMany
+    {
+        return $this->hasMany(Reparation::class);
+    }
     public function company():BelongsTo
     {
         return $this->belongsTo(Company::class);

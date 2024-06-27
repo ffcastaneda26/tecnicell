@@ -113,8 +113,8 @@
     "Diagnostic": "Diagnóstico",
     "Techincal id": "Técnico",
     "Diagnosis": "Diagnóstico",
-    "Created at": "Creado",
-    "Updated at": "Actualizado",
+    "Created at": "Creado el",
+    "Updated at": "Actualizado el",
     "Cotization Statuses": "Estados de Reparaciones",
     "Cotization Status": "Estado de Cotización",
     "Cotizations": "Cotizaciones",
@@ -125,5 +125,9 @@
     "Reparation Statuses": "Estados de Reparaciones",
     "Reparation Status": "Estado de Reparación",
     "Reparations": "Reparaciones",
-    "Reparation": "Reparación"
+    "Reparation": "Reparación",
+    "Start date": "Fecha de Inicio",
+    "Finish date": "Fecha de Terminación",
+    "Cost": "Costo",
+    "Reparation status id": "Estado"
 }

@@ -2,29 +2,34 @@
 
 namespace App\Models;
 
-use App\Filament\Resources\UserResource;
-use App\Observers\CotizationObserver;
+use App\Observers\ReparationObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[ObservedBy([CotizationObserver::class])]
-class Cotization extends Model
+#[ObservedBy([ReparationObserver::class])]
+class Reparation extends Model
 {
     use HasFactory;
 
-    protected $table='cotizations';
     protected $fillable = [
         'branch_id',
         'client_id',
         'device_id',
-        'description',
-        'cotization_status_id',
-        'estimated_cost',
-        'client_approved',
-        'approval_date'
+        'start_date',
+        'finish_date',
+        'cost',
+        'notes',
+        'reparation_status_id'
     ];
+    protected function casts(): array
+    {
+        return [
+            'start_date' => 'datetime:Y-m-d',
+            'finish_date' => 'datetime:Y-m-d'
+        ];
+    }
 
     public function company():BelongsTo
     {
@@ -53,9 +58,6 @@ class Cotization extends Model
 
     public function status(): BelongsTo
     {
-        return $this->belongsTo(CotizationStatus::class,'cotization_status_id');
+        return $this->belongsTo(ReparationStatus::class,'reparation_status_id');
     }
-
-
-
 }
