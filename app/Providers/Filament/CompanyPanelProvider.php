@@ -9,6 +9,7 @@ use App\Filament\Resources\CotizationStatusResource;
 use App\Filament\Resources\DeviceModelResource;
 use App\Filament\Resources\DeviceStatusResource;
 use App\Filament\Resources\ProductResource;
+use App\Filament\Resources\ReparationStatusResource;
 use App\Filament\Resources\UserResource;
 use App\Models\DeviceModel;
 use Filament\Http\Middleware\Authenticate;
@@ -65,8 +66,8 @@ class CompanyPanelProvider extends PanelProvider
                 BrandResource::class,
                 DeviceStatusResource::class,
                 CotizationStatusResource::class,
+                ReparationStatusResource::class,
                 DeviceModelResource::class,
-
                 ProductResource::class,
                 ClientResource::class,
             ])
