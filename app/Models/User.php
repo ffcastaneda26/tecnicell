@@ -126,6 +126,11 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->hasMany(Reparation::class);
     }
+
+    public function warranties():HasMany
+    {
+        return $this->hasMany(Warranty::class);
+    }
     public function roles_gerente(): HasMany
     {
         return $this->hasMany(Role::class)

@@ -7,14 +7,14 @@ use Illuminate\Support\Facades\Auth;
 
 class ReparationObserver
 {
-    public function creating(Reparation $reparation)
+    public function creating(Reparation $record)
     {
-        $reparation->user_id = Auth::user()->id;
-        $reparation->company_id = Auth::user()->companies->first()->id;
+        $record->user_id = Auth::user()->id;
+        $record->company_id = Auth::user()->companies->first()->id;
     }
 
-    public function editing(Reparation $reparation)
+    public function editing(Reparation $record)
     {
-        $reparation->user_id = Auth::user()->id;
+        $record->user_id = Auth::user()->id;
     }
 }

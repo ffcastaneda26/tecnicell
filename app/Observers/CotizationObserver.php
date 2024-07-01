@@ -7,14 +7,14 @@ use Illuminate\Support\Facades\Auth;
 
 class CotizationObserver
 {
-    public function creating(Cotization $cotization)
+    public function creating(Cotization $record)
     {
-        $cotization->user_id = Auth::user()->id;
-        $cotization->company_id = Auth::user()->companies->first()->id;
+        $record->user_id = Auth::user()->id;
+        $record->company_id = Auth::user()->companies->first()->id;
     }
 
-    public function editing(Cotization $cotization)
+    public function editing(Cotization $record)
     {
-        $cotization->user_id = Auth::user()->id;
+        $record->user_id = Auth::user()->id;
     }
 }

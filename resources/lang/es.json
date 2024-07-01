@@ -129,5 +129,7 @@
     "Start date": "Fecha de Inicio",
     "Finish date": "Fecha de Terminación",
     "Cost": "Costo",
-    "Reparation status id": "Estado"
+    "Reparation status id": "Estado",
+    "Warranty": "Garantía",
+    "Warranties": "Garantías"
 }

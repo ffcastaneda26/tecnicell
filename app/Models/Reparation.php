@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 #[ObservedBy([ReparationObserver::class])]
 class Reparation extends Model
@@ -59,5 +60,10 @@ class Reparation extends Model
     public function status(): BelongsTo
     {
         return $this->belongsTo(ReparationStatus::class,'reparation_status_id');
+    }
+
+    public function warranty(): HasOne
+    {
+        return $this->hasOne(Reparation::class);
     }
 }

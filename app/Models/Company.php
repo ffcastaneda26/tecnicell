@@ -81,6 +81,11 @@ class Company extends Model
         return $this->hasMany(Reparation::class);
     }
 
+    public function warranties():HasMany
+    {
+        return $this->hasMany(Warranty::class);
+    }
+
 
     public function state():BelongsTo
     {
