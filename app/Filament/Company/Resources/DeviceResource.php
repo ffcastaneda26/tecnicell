@@ -38,7 +38,7 @@ class DeviceResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-device-phone-mobile';
     protected static ?string $activeNavigationIcon = 'heroicon-s-shield-check';
-    protected static ?int $navigationSort = 8;
+    protected static ?int $navigationSort = 10;
 
 
     public static function getNavigationLabel(): string

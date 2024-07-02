@@ -32,7 +32,7 @@ class ClientResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user-circle';
     protected static ?string $activeNavigationIcon = 'heroicon-s-shield-check';
-    protected static ?int $navigationSort = 7;
+    protected static ?int $navigationSort = 9;
 
 
     public static function getNavigationLabel(): string

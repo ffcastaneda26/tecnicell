@@ -2,25 +2,23 @@
 
 namespace App\Models;
 
-use App\Observers\BranchObserver;
-use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[ObservedBy([BranchObserver::class])]
-class Branch extends Model
+class Warehouse extends Model
 {
     use HasFactory;
-    protected $table = 'branches';
+
+    protected $table = 'warehouses';
 
     protected $fillable = [
         'company_id',
+        'branch_id',
         'name',
         'short',
-        'slug',
         'email',
         'phone',
         'address',
@@ -44,26 +42,17 @@ class Branch extends Model
             set: fn (string $value) => strtoupper($value),
         );
     }
-    public function diagnostics(): HasMany
-    {
-        return $this->hasMany(Diagnostic::class);
-    }
-    public function cotizations(): HasMany
-    {
-        return $this->hasMany(Cotization::class);
-    }
-    public function reparations(): HasMany
-    {
-        return $this->hasMany(Reparation::class);
-    }
 
-    public function warranties():HasMany
-    {
-        return $this->hasMany(Warranty::class);
-    }
+
+
     public function company():BelongsTo
     {
         return $this->belongsTo(Company::class);
+    }
+
+    public function branch():BelongsTo
+    {
+        return $this->belongsTo(Branch::class);
     }
     public function country():BelongsTo
     {

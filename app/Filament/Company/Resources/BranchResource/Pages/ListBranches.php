@@ -5,6 +5,7 @@ namespace App\Filament\Company\Resources\BranchResource\Pages;
 use App\Filament\Company\Resources\BranchResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Illuminate\Support\Facades\Auth;
 
 class ListBranches extends ListRecords
 {
@@ -12,8 +13,16 @@ class ListBranches extends ListRecords
 
     protected function getHeaderActions(): array
     {
-        return [
-            Actions\CreateAction::make(),
+        if (!Auth::user()->hasrole('Admin') && Auth::user()->companies->count() && Auth::user()->companies->first()->branches->count() < Auth::user()->companies->first()->permitted_branches ) {
+            return [
+                Actions\CreateAction::make(),
+            ];
+        }
+
+        return
+        [
+
         ];
+
     }
 }
