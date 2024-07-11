@@ -128,7 +128,16 @@ class WarehouseResource extends Resource
                         Toggle::make('active')
                     ])->columns(3),
 
-
+                    Section::make()
+                    ->schema([
+                        TextInput::make('address')
+                            ->translateLabel()
+                            ->columnSpan(2),
+                        TextInput::make('num_ext')
+                            ->maxLength(6),
+                        TextInput::make('num_int')
+                            ->maxLength(6),
+                    ])->columns(4),
                 Section::make()
                     ->schema([
                         Select::make('country_id')
@@ -154,12 +163,14 @@ class WarehouseResource extends Resource
                                 }
                                 return $country->states->pluck('name', 'id');
                             }),
-
-                    ])->columns(2),
+                        TextInput::make('municipality')
+                            ->translateLabel()
+                            ->maxLength(100),
+                    ])->columns(3),
 
                 Section::make()
                     ->schema([
-                        TextInput::make('municipality')
+                        TextInput::make('city')
                             ->translateLabel()
                             ->maxLength(100),
                         TextInput::make('colony')

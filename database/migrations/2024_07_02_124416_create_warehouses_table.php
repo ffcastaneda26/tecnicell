@@ -23,7 +23,6 @@ return new class extends Migration
             $table->string('name',100)->comment('Nombre');
             $table->string('short',20)->comment('Corto');
             $table->string('email')->nullable()->default(null)->comment('Correo Electrónico');
-
             $table->string('phone',15)->nullable()->default(null)->comment('Teléfono');
             $table->string('address',80)->nullable()->default(null)->comment('Dirección calle');
             $table->string('num_ext',6)->nullable()->default(null)->comment('Número Exterior');

@@ -35,7 +35,8 @@ class DatabaseSeeder extends Seeder
             'company_user',
             'companies',
             'branches',
-            'clients'
+            'clients',
+            'key_movements',
         ]);
         $this->command->info('Talas Trucadas');
 
@@ -54,6 +55,7 @@ class DatabaseSeeder extends Seeder
             CompanySeeder::class,
             BranchSeeder::class,
             ClientSeeder::class,
+            KeyMovementSeeder::class,
         ]);
 
 

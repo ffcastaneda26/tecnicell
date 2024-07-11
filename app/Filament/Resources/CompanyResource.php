@@ -168,16 +168,23 @@ class CompanyResource extends Resource
                                         TextInput::make('municipality')
                                             ->translateLabel()
                                             ->maxLength(100),
-                                        TextInput::make('colony')
-                                            ->translateLabel()
-                                            ->maxLength(100),
-                                        TextInput::make('zipcode')
-                                            ->translateLabel()
-                                            ->maxLength(5)
-                                            ->validationMessages([
-                                                'maxLenght' => 'The :attribute.',
-                                            ]),
-                                    ])->columns(5),
+
+                                    ])->columns(3),
+                                Section::make()
+                                    ->schema([
+                                        TextInput::make('city')
+                                        ->translateLabel()
+                                        ->maxLength(100),
+                                    TextInput::make('colony')
+                                        ->translateLabel()
+                                        ->maxLength(100),
+                                    TextInput::make('zipcode')
+                                        ->translateLabel()
+                                        ->maxLength(5)
+                                        ->validationMessages([
+                                            'maxLenght' => 'The :attribute.',
+                                        ]),
+                                    ])->columns(3),
                             ]),
                         Tabs\Tab::make(__('Logo'))
                             ->schema([

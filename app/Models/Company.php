@@ -47,6 +47,11 @@ class Company extends Model
     {
         return $this->hasMany(Branch::class);
     }
+
+    public function key_movements(): HasMany
+    {
+        return $this->hasMany(KeyMovement::class);
+    }
     public function warehouses(): HasMany
     {
         return $this->hasMany(Warehouse::class);
