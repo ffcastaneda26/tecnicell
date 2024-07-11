@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Company;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -21,6 +22,7 @@ return new class extends Migration
             $table->string('short_english',6)->comment('Corto en inglés');
             $table->string('used_to',10)->comment('Usarse para: I=Inventory S=Sale');
             $table->string('type')->comment('Tipo: I=Input O=Output');
+            $table->foreignIdFor(User::class)->comment('Usuario creó o modificó');
         });
     }
 

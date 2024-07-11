@@ -19,7 +19,8 @@ class KeyMovement extends Model
         'name_english',
         'short_english',
         'used_to',
-        'type'
+        'type',
+        'user_id'
     ];
 
     public function company(): BelongsTo
