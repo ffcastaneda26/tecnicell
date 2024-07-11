@@ -57,6 +57,11 @@ class Branch extends Model
         return $this->hasMany(Reparation::class);
     }
 
+    public function warehouses(): HasMany
+    {
+        return $this->hasMany(Warehouse::class);
+    }
+
     public function warranties():HasMany
     {
         return $this->hasMany(Warranty::class);

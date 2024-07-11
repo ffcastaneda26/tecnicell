@@ -74,7 +74,18 @@ class ProductResource extends Resource
         }
         return null;
     }
+    public static function getEloquentQuery(): Builder
+    {
 
+        if(Auth::user()->hasrole('Admin')){
+            return parent::getEloquentQuery();
+        }
+        $company = Auth::user()->companies->first();
+
+        return parent::getEloquentQuery()
+                ->where('company_id', $company->id);
+
+    }
     public static function form(Form $form): Form
     {
 

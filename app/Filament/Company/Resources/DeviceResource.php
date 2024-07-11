@@ -115,7 +115,7 @@ class DeviceResource extends Resource
                             ->searchable()
                             ->translateLabel(),
 
-                        Select::make('id_brand')
+                        Select::make('brand_id')
                             ->required()
                             ->relationship('brand')
                             ->translateLabel()
