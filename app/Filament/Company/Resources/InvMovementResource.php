@@ -3,57 +3,63 @@
 namespace App\Filament\Company\Resources;
 
 use Closure;
+
 use Filament\Forms;
 use Filament\Tables;
-use App\Models\Branch;
 use App\Models\Company;
 use App\Models\Product;
 use Filament\Forms\Get;
+
+use Filament\Forms\Set;
 use Filament\Forms\Form;
 use App\Models\Warehouse;
-use App\Models\DeviceType;
 use Filament\Tables\Table;
+use App\Models\InvMovement;
+use App\Models\KeyMovement;
+use App\InvMovementStatusEnum;
 use App\Models\WarehouseProduct;
 use Filament\Resources\Resource;
 use Illuminate\Support\Facades\App;
 use Filament\Forms\Components\Group;
 use Illuminate\Support\Facades\Auth;
+use PhpParser\Node\Expr\Cast\Array_;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Forms\Components\MarkdownEditor;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Company\Resources\WarehouseProductResource\Pages;
-use App\Filament\Company\Resources\WarehouseProductResource\RelationManagers;
+use App\Filament\Company\Resources\InvMovementResource\Pages;
+use App\Filament\Company\Resources\InvMovementResource\RelationManagers;
 
-class WarehouseProductResource extends Resource
+class InvMovementResource extends Resource
 {
-    protected static ?string $model = WarehouseProduct::class;
+    protected static ?string $model = InvMovement::class;
 
-
-    protected static ?string $navigationIcon = 'heroicon-o-book-open';
+    protected static ?string $navigationIcon = 'heroicon-o-queue-list';
     protected static ?string $activeNavigationIcon = 'heroicon-s-shield-check';
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
 
 
     public static function getNavigationLabel(): string
     {
-        return __('Products');
+        return __('Inv Movements');
     }
 
 
     public static function getModelLabel(): string
     {
-        return __('Product');
+        return __('Inv Movement');
     }
 
 
     public static function getPluralLabel(): ?string
     {
-        return __('Products');
+        return __('Inv Movements');
     }
     public static function getNavigationGroup(): string
     {
@@ -70,7 +76,8 @@ class WarehouseProductResource extends Resource
 
         return parent::getEloquentQuery()
             ->wherehas('warehouse', function ($query) use ($company) {
-                $query->where('company_id', $company->id);
+                $query->where('company_id', $company->id)
+                    ->wherehas('products');
             });
 
     }
@@ -82,12 +89,13 @@ class WarehouseProductResource extends Resource
 
         return $form
             ->schema([
-                Group::make()
+                Section::make()
                     ->schema([
                         Select::make('warehouse_id')
                             ->translateLabel()
                             ->options(function (): array {
-                                return Warehouse::where('company_id', self::getCompanyUser()->id)->pluck('name', 'id')->all();
+                                return Warehouse::where('company_id', self::getCompanyUser()->id)
+                                    ->wherehas('products')->pluck('name', 'id')->all();
                             })
                             ->required()
                             ->translateLabel()
@@ -97,65 +105,66 @@ class WarehouseProductResource extends Resource
                                         $exists = WarehouseProduct::where('product_id', $get('product_id'))
                                             ->where('warehouse_id', $get('warehouse_id'))
                                             ->exists();
-
-                                        if ($exists) {
-                                            $fail(__('The product already exists in this warehouse'));
+                                        if (!$exists) {
+                                            $fail(__('The product does not exist in this warehouse'));
                                         }
                                     }
-
                                 },
-                            ]),
+                            ])
+                            ->live(onBlur: true)
+                            ->afterStateUpdated(fn(callable $set) => $set('product_id', null)),
                         Select::make('product_id')
-                            ->options(function (): array {
-                                return Product::where('company_id', self::getCompanyUser()->id)->pluck('name', 'id')->all();
-                            })
+                            ->relationship(name: 'product', titleAttribute: 'name'),
+                        Select::make('key_movement_id')
                             ->translateLabel()
+                            ->options(function (): array {
+                                if (App::isLocale('en')) {
+                                    return KeyMovement::where('company_id', self::getCompanyUser()->id)
+                                        ->where('used_to', 'I')
+                                        ->pluck('name_english', 'id')->all();
+                                }
+                                return KeyMovement::where('company_id', self::getCompanyUser()->id)
+                                    ->where('used_to', 'I')
+                                    ->pluck('name_spanish', 'id')->all();
+
+                            })
                             ->required(),
-                        Section::make()
-                            ->schema([
-                                TextInput::make('stock_min')
-                                    ->required()
-                                    ->translateLabel(),
-                                TextInput::make('stock_max')
-                                    ->required()
-                                    ->translateLabel(),
-                                TextInput::make('stock_reorder')
-                                    ->required()
-                                    ->translateLabel(),
-                                TextInput::make('average_cost')
-                                    ->required()
-                                    ->translateLabel()
-                            ])->columns(4)
-                            ->description(__('Data for inventory control'))
-                    ])->columns(2),
+                        DatePicker::make('date')
+                            ->required()
+                            ->translateLabel()
+                            ->before(now()),
+                        TextInput::make('quantity')
+                            ->required()
+                            ->translateLabel()
+                            ->numeric(),
+                        TextInput::make('cost')
+                            ->translateLabel(),
+                    ])->columns(3),
                 Group::make()
                     ->schema([
-                        TextInput::make('price_sale')
-                            ->required()
+                        MarkdownEditor::make('notes')
                             ->translateLabel(),
-                        TextInput::make('last_purchase_price')
-                            ->translateLabel(),
-                        TextInput::make('stock')
-                            ->required()
-                            ->translateLabel(),
-                        TextInput::make('stock_available')
-                            ->required()
-                            ->translateLabel(),
-
-                        TextInput::make('stock_compromised')
-                            ->required()
-                            ->translateLabel(),
-                        Toggle::make('active'),
+                    ]),
+                Group::make()
+                    ->schema([
                         Section::make()
                             ->schema([
-                                FileUpload::make('image')
-                                ->translateLabel()
-                                ->directory('/warehouse/products')
-                                ->preserveFilenames()
-                                ->columns(3),
-                            ]),
+                                TextInput::make('reference')
+                                    ->translateLabel()
+                                    ->maxLength(100),
+                                Select::make('status')
+                                    ->options(InvMovementStatusEnum::class)
+                                    ->translateLabel(),
+                            ])->columns(2),
 
-                           ])->columns(3),
+                        FileUpload::make('voucher_image')
+                            ->translateLabel()
+                            ->directory('/inventory/movements/vouchers')
+                            ->preserveFilenames(),
+
+                    ]),
+
+
 
             ]);
     }
@@ -168,19 +177,19 @@ class WarehouseProductResource extends Resource
                     ->translateLabel(),
                 TextColumn::make('product.name')
                     ->translateLabel(),
-                TextColumn::make('price_sale')
-                    ->translateLabel()
-                    ->numeric(),
-                TextColumn::make('last_purchase_price')
-                    ->translateLabel()
-                    ->numeric(),
-                TextColumn::make('stock')
-                    ->translateLabel()
-                    ->numeric(),
-                TextColumn::make('stock_available')
-                    ->translateLabel()
-                    ->numeric(),
+                TextColumn::make('date')
+                    ->dateTime('d-m-Y')
+                    ->translateLabel(),
 
+                TextColumn::make('key_movement.name_spanish')
+                    ->translateLabel()
+                    ->visible(App::isLocale('es')),
+                TextColumn::make('key_movement.name_english')
+                    ->translateLabel()
+                    ->visible(App::isLocale('en')),
+                TextColumn::make('quantity')
+                    ->translateLabel()
+                     ->numeric(decimalPlaces: 0),
             ])
             ->filters([
                 //
@@ -205,9 +214,9 @@ class WarehouseProductResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListWarehouseProducts::route('/'),
-            'create' => Pages\CreateWarehouseProduct::route('/create'),
-            'edit' => Pages\EditWarehouseProduct::route('/{record}/edit'),
+            'index' => Pages\ListInvMovements::route('/'),
+            'create' => Pages\CreateInvMovement::route('/create'),
+            'edit' => Pages\EditInvMovement::route('/{record}/edit'),
         ];
     }
 
@@ -215,4 +224,5 @@ class WarehouseProductResource extends Resource
     {
         return Auth::user()->companies->first();
     }
+
 }

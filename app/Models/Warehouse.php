@@ -45,6 +45,16 @@ class Warehouse extends Model
 
 
 
+    public function inv_movements(): HasMany
+    {
+        return $this->hasMany(InvMovement::class);
+    }
+
+    public function products(): HasMany
+    {
+        return $this->hasMany(WarehouseProduct::class);
+    }
+
     public function company():BelongsTo
     {
         return $this->belongsTo(Company::class);

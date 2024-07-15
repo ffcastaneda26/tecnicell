@@ -22,8 +22,12 @@ class Product extends Model
         'user_id'
     ];
 
+    public function inv_movements(): HasMany
+    {
+        return $this->hasMany(InvMovement::class);
+    }
 
-    public function warehous_products(): HasMany
+    public function warehouse_products(): HasMany
     {
         return $this->hasMany(WarehouseProduct::class);
     }

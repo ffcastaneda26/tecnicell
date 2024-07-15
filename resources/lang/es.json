@@ -145,6 +145,7 @@
     "Product id": "Producto",
     "Inventory": "Inventario",
     "The product already exists in this warehouse": "El producto ya existe en este almacen",
+    "The product does not exist in this warehouse": "El producto no existe en este almacén",
     "Price sale": "Precio de Venta",
     "Last purchase price":"Último precio de compra",
     "Stock":"Existencia Total",
@@ -154,6 +155,12 @@
     "Stock min": "Existencia Mínimo",
     "Stock max": "Existencia Máxima",
     "Stock reorder": "Punto de Reorden",
-    "Average cost": "Costo Promedio"
+    "Average cost": "Costo Promedio",
+    "Inv Movements": "Movimientos de Inventario",
+    "Inv Movement": "Movimiento de Inventario",
+    "Quantity": "Cantidad",
+    "Key movement id": "Clave Mov",
+    "Voucher image": "Imagen Comprobante",
+    "Key movement": "Clave Movimiento"
 
 }
