@@ -21,6 +21,7 @@ return new class extends Migration
             $table->decimal('last_purchase_price',8,2)->default(0.00)->comment('Precio última compra');
             $table->integer('stock')->default(0)->comment('Existencia Total');
             $table->integer('stock_available')->default(0)->comment('Existencia disponible');
+            $table->integer('stock_compromised')->default(0)->comment('Existencia Comprometida');
             $table->integer('stock_min')->default(0)->comment('Existencia minima');
             $table->integer('stock_max')->default(0)->comment('Existencia máxima');
             $table->integer('stock_reorder')->default(0)->comment('Punto de reorden');

@@ -10,18 +10,7 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateWarehouseProduct extends CreateRecord
 {
     protected static string $resource = WarehouseProductResource::class;
-    protected function mutateFormDataBeforeCreate(array $data): array
-    {
-        if($data['warehouse_id'] && $data['product_id']){
-            $exists = WarehouseProduct::where('warehouse_id',$data['warehouse_id'])
-                                        ->where('product_id',$data['product_id'])
-                                        ->exists();
-            if($exists){
-               
-            }
-        };
-        return $data;
-    }
+    
 
     protected function getRedirectUrl(): string
     {

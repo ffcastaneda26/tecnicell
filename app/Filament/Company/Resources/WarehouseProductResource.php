@@ -19,13 +19,15 @@ use Illuminate\Support\Facades\App;
 use Filament\Forms\Components\Group;
 use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Company\Resources\WarehouseProductResource\Pages;
 use App\Filament\Company\Resources\WarehouseProductResource\RelationManagers;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Components\TextInput;
 
 class WarehouseProductResource extends Resource
 {
@@ -90,15 +92,15 @@ class WarehouseProductResource extends Resource
                             ->required()
                             ->translateLabel()
                             ->rules([
-                                fn(Get $get,string $operation): Closure => function (string $attribute, $value, Closure $fail) use ($get,$operation) {
-                                    if($operation == 'create'){
+                                fn(Get $get, string $operation): Closure => function (string $attribute, $value, Closure $fail) use ($get, $operation) {
+                                    if ($operation == 'create') {
                                         $exists = WarehouseProduct::where('product_id', $get('product_id'))
-                                        ->where('warehouse_id', $get('warehouse_id'))
-                                        ->exists();
+                                            ->where('warehouse_id', $get('warehouse_id'))
+                                            ->exists();
 
-                                    if ($exists) {
-                                        $fail(__('The product already exists in this warehouse'));
-                                    }
+                                        if ($exists) {
+                                            $fail(__('The product already exists in this warehouse'));
+                                        }
                                     }
 
                                 },
@@ -108,7 +110,23 @@ class WarehouseProductResource extends Resource
                                 return Product::where('company_id', self::getCompanyUser()->id)->pluck('name', 'id')->all();
                             })
                             ->translateLabel()
-                            ->required()
+                            ->required(),
+                        Section::make()
+                            ->schema([
+                                TextInput::make('stock_min')
+                                    ->required()
+                                    ->translateLabel(),
+                                TextInput::make('stock_max')
+                                    ->required()
+                                    ->translateLabel(),
+                                TextInput::make('stock_reorder')
+                                    ->required()
+                                    ->translateLabel(),
+                                TextInput::make('average_cost')
+                                    ->required()
+                                    ->translateLabel()
+                            ])->columns(4)
+                            ->description(__('Data for inventory control'))
                     ])->columns(2),
                 Group::make()
                     ->schema([
@@ -124,24 +142,21 @@ class WarehouseProductResource extends Resource
                             ->required()
                             ->translateLabel(),
 
+                        TextInput::make('stock_compromised')
+                            ->required()
+                            ->translateLabel(),
+                        Toggle::make('active'),
+                        Section::make()
+                            ->schema([
+                                FileUpload::make('image')
+                                ->translateLabel()
+                                ->directory('/warehouse/products')
+                                ->preserveFilenames()
+                                ->columns(3),
+                            ]),
+   
+                           ])->columns(3),
 
-                    ])->columns(2),
-                Section::make()
-                    ->schema([
-                        TextInput::make('stock_min')
-                            ->required()
-                            ->translateLabel(),
-                        TextInput::make('stock_max')
-                            ->required()
-                            ->translateLabel(),
-                        TextInput::make('stock_reorder')
-                            ->required()
-                            ->translateLabel(),
-                        TextInput::make('average_cost')
-                            ->required()
-                            ->translateLabel()
-                    ])->columns(4)
-                    ->description(__('Data for inventory control'))
             ]);
     }
 
