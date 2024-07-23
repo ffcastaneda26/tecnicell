@@ -258,11 +258,11 @@ class InvMovementResource extends Resource
                 TextColumn::make('quantity')
                     ->translateLabel()
                     ->alignment(Alignment::End)
-                    ->numeric(decimalPlaces: 2),
+                    ->numeric(decimalPlaces: 0, decimalSeparator: '.' , thousandsSeparator: ','),
                 TextColumn::make('cost')
                     ->translateLabel()
                     ->alignment(Alignment::End)
-                    ->numeric(decimalPlaces: 2)
+                    ->numeric(decimalPlaces: 2, decimalSeparator: '.' , thousandsSeparator: ',')
 
             ])
             ->filters([
