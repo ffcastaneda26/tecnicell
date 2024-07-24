@@ -14,12 +14,13 @@ class KeyMovement extends Model
 
     protected $fillable = [
         'company_id',
-        'name_spanish',
+        'spanish',
         'short_spanish',
         'name_english',
-        'short_english',
+        'english',
         'used_to',
         'type',
+        'require_cost',
         'user_id'
     ];
 
@@ -27,4 +28,6 @@ class KeyMovement extends Model
     {
         return $this->belongsTo(Company::class);
     }
+
+    
 }

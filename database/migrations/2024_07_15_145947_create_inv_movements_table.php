@@ -22,7 +22,7 @@ return new class extends Migration
             $table->foreignIdFor(KeyMovement::class)->comment('Clave de movimiento');
             $table->date('date')->comment('Fecha');
             $table->integer('quantity')->comment('Cantidad');
-            $table->decimal('cost',8,2)->default(0.00)->comment('Costo');
+            $table->decimal('cost',11,6)->default(0.00)->comment('Costo');
             $table->string('reference',100)->nullable()->default(null)->comment('Referencia');
             $table->mediumText('notes')->nullable()->default(null)->comment('Notas');
             $table->string('voucher_image')->nullable()->default(null)->comment('Imagen del comprobante');

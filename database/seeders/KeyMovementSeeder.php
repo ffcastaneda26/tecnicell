@@ -19,31 +19,13 @@ class KeyMovementSeeder extends Seeder
 
 
         DB::table('key_movements')->truncate();
-        // 'company_id',
-        // 'name_spanish',
-        // 'short_spanish',
-        // 'name_english',
-        // 'short_english',
-        // 'used_to',
-        // 'type',
-        // 'user_id'
-        // (`company_id`, `name_spanish`, `short_spanish`, `name_english`, `short_english`, `used_to`, `type`, `user_id`)
-        $sql = "INSERT INTO key_movements VALUES
+            $sql = "INSERT INTO key_movements VALUES
             (1,'1', 'Compra', 'Comp', 'Buy', 'Buy', 'I', 'O', '2'),
             (2,'1','Devolución Cliente','DevCte','Customer Return','CusRet','I','I','2'),
             (3,'1','Ajuste','Ajuste','Adjustment','Adjust','I','I','2'),
             (4,'1','Venta','Venta','Sale','Sale','O','I','2'),
             (5,'1','Devolución Proveedor','DevPro','Return to provider','RetPro','O','I','2'),
             (6,'1','Ajuste','Ajuste','Adjustment','Adjust','O','I','2');";
-
-
-        // $sql= "INSERT INTO key_movements VALUES
-        // (1,1,'Compra','Comp','Buy','Buy','I','I','2),
-        // (2,1,'Devolución Cliente','DevCte','Customer Return','CusRet','I','I',2),
-        // (3,1,'Ajuste','Ajuste','Adjustment','Adjust','I','I',2),
-        // (4,1,'Venta','Venta','Sale','Sale','I','O',2),
-        // (5,1,'Devolución Proveedor','DevPro','Return to provider','RetPro','I','O,2),
-        // (6,1,'Ajuste','Ajuste','Adjustment','Adjust','I','O',2);";
 
         DB::update($sql);
 

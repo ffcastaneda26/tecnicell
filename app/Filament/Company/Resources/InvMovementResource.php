@@ -38,6 +38,7 @@ use App\Filament\Company\Resources\InvMovementResource\RelationManagers;
 use Filament\Forms\Components\Fieldset;
 use Filament\Notifications\Notification;
 use Filament\Support\Enums\Alignment;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Validation\ValidationException;
 
 class InvMovementResource extends Resource
@@ -136,30 +137,20 @@ class InvMovementResource extends Resource
                             ->required()
                             ->translateLabel()
                             ->reactive()
-                            ->options(function (): array {
-                                if (App::isLocale('en')) {
-                                    return KeyMovement::where('company_id', self::getCompanyUser()->id)
-                                        ->where('used_to', 'I')
-                                        ->pluck('name_english', 'id')->all();
-                                }
-                                return KeyMovement::where('company_id', self::getCompanyUser()->id)
-                                    ->where('used_to', 'I')
-                                    ->pluck('name_spanish', 'id')->all();
-
-                            })
+                            ->options(InvMovementResource::getKeyMovements())
                             ->afterStateUpdated(
-                                function (callable $get, Set $set, ?int $state) {
+                                function (callable $get, string $operation,Set $set, ?int $state) {
                                     if ($state) {
+                                        $set('cost', null);
                                         $key_movement = KeyMovement::findOrFail($state);
-                                        if ($key_movement->type == 'O') {
-                                            $product_cost = WarehouseProduct::where('warehouse_id', $get('warehouse_id'))
-                                                ->where('product_id', $get('product_id'))
-                                                ->first();
+                                        if (!$key_movement->require_cost) {
+                                            // $product_cost = WarehouseProduct::where('warehouse_id', $get('warehouse_id'))
+                                            //     ->where('product_id', $get('product_id'))
+                                            //     ->first();
+                                            $product_cost= InvMovementResource::getWareHouseProduct($get('warehouse_id'),$get('product_id'));
                                             if ($product_cost) {
                                                 $set('cost', $product_cost->average_cost);
                                             }
-                                        }else{
-                                            $set('cost', null);
                                         }
                                     }
                                 }
@@ -219,6 +210,10 @@ class InvMovementResource extends Resource
                             ->maxLength(100),
                         Select::make('status')
                             ->options(InvMovementStatusEnum::class)
+                            ->default(function (): string {
+                                return App::isLocale('en') ? 'Applied' : 'Aplicado';
+                            })
+                            ->hidden()
                             ->translateLabel(),
                     ])->disabled(function (callable $get): bool {
                         return $get('key_movement_id') ? false : true;
@@ -241,6 +236,10 @@ class InvMovementResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('id')
+                ->translateLabel(),
+                TextColumn::make('key_movement_id')
+                ->label('Clave Id'),
                 TextColumn::make('warehouse.name')
                     ->translateLabel(),
                 TextColumn::make('product.name')
@@ -249,27 +248,30 @@ class InvMovementResource extends Resource
                     ->dateTime('d-m-Y')
                     ->translateLabel(),
 
-                TextColumn::make('key_movement.name_spanish')
+                TextColumn::make('key_movement.spanish')
                     ->translateLabel()
                     ->visible(App::isLocale('es')),
-                TextColumn::make('key_movement.name_english')
+                TextColumn::make('key_movement.english')
                     ->translateLabel()
                     ->visible(App::isLocale('en')),
                 TextColumn::make('quantity')
                     ->translateLabel()
                     ->alignment(Alignment::End)
-                    ->numeric(decimalPlaces: 0, decimalSeparator: '.' , thousandsSeparator: ','),
+                    ->numeric(decimalPlaces: 0, decimalSeparator: '.', thousandsSeparator: ','),
                 TextColumn::make('cost')
                     ->translateLabel()
                     ->alignment(Alignment::End)
-                    ->numeric(decimalPlaces: 2, decimalSeparator: '.' , thousandsSeparator: ',')
+                    ->numeric(decimalPlaces: 4, decimalSeparator: '.', thousandsSeparator: ',')
 
             ])
             ->filters([
-                //
+                SelectFilter::make('key_movement_id')
+                    ->options(InvMovementResource::getKeyMovements())
+                    ->translateLabel()
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -299,5 +301,22 @@ class InvMovementResource extends Resource
         return Auth::user()->companies->first();
     }
 
+    private static function getWareHouseProduct($warehouse_id,$product_id): WarehouseProduct
+    {
+        return WarehouseProduct::where('warehouse_id',$warehouse_id)
+                            ->where('product_id',$product_id)
+                            ->first();
+    }
+    private static function getKeyMovements(): array
+    {
+        if (App::isLocale('en')) {
+            return KeyMovement::where('company_id', self::getCompanyUser()->id)
+                ->where('used_to', 'I')
+                ->pluck('english', 'id')->all();
+        }
+        return KeyMovement::where('company_id', self::getCompanyUser()->id)
+            ->where('used_to', 'I')
+            ->pluck('spanish', 'id')->all();
+    }
 
 }

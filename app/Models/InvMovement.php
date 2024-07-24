@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
+use App\Observers\InvMovementObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
+#[ObservedBy([InvMovementObserver::class])]
 class InvMovement extends Model
 {
     use HasFactory;
@@ -26,11 +30,17 @@ class InvMovement extends Model
 
 
     protected function casts(): array
-{
-    return [
-        'date' => 'datetime:Y-m-d',
-    ];
-}
+    {
+        return [
+            'date' => 'datetime:Y-m-d',
+        ];
+    }
+    protected function amount(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => $this->quantity * $this->cost,
+        );
+    }
     public function warehouse(): BelongsTo
     {
         return $this->belongsTo(Warehouse::class);
@@ -41,7 +51,7 @@ class InvMovement extends Model
         return $this->belongsTo(Product::class);
     }
 
-    public function key_movement():BelongsTo
+    public function key_movement(): BelongsTo
     {
         return $this->belongsTo(KeyMovement::class);
     }

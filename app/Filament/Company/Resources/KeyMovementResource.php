@@ -13,6 +13,7 @@ use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -94,7 +95,7 @@ class KeyMovementResource extends Resource
             ->schema([
                 Group::make()
                     ->schema([
-                        TextInput::make('name_spanish')
+                        TextInput::make('spanish')
                             ->translateLabel()
                             ->required(),
                         TextInput::make('short_spanish')
@@ -105,7 +106,7 @@ class KeyMovementResource extends Resource
                     ]),
                 Group::make()
                     ->schema([
-                        TextInput::make('name_english')
+                        TextInput::make('english')
                             ->translateLabel()
                             ->required(),
                         TextInput::make('short_english')
@@ -129,6 +130,8 @@ class KeyMovementResource extends Resource
                             ->translateLabel()
                             ->options(KeyMovementUsedToEnum::class)
                             ->required(),
+                        Toggle::make('require_cost')
+                            ->translateLabel()
                     ]),
 
             ]);
@@ -138,7 +141,7 @@ class KeyMovementResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name_spanish')
+                TextColumn::make('spanish')
                     ->translateLabel()
                     ->sortable()
                     ->searchable(),
@@ -146,7 +149,7 @@ class KeyMovementResource extends Resource
                     ->translateLabel()
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('name_english')
+                TextColumn::make('english')
                     ->translateLabel()
                     ->sortable()
                     ->searchable(),

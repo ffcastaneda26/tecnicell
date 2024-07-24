@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class WarehouseProduct extends Model
 {
@@ -32,5 +33,15 @@ class WarehouseProduct extends Model
     public function product():BelongsTo
     {
         return $this->belongsTo(Product::class);
+    }
+
+    /** Funciones auxiliares */
+
+    protected function totalCost(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => $this->stock * $this->average_cost,
+        );
+
     }
 }

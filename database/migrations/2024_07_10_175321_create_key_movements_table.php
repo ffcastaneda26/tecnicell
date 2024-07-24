@@ -16,12 +16,13 @@ return new class extends Migration
         Schema::create('key_movements', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Company::class)->comment('Empresa');
-            $table->string('name_spanish',50)->comment('Nombre en español');
+            $table->string('spanish',50)->comment('Nombre en español');
             $table->string('short_spanish',6)->comment('Corto en español');
-            $table->string('name_english',50)->comment('Nombre en inglés');
+            $table->string('english',50)->comment('Nombre en inglés');
             $table->string('short_english',6)->comment('Corto en inglés');
             $table->string('used_to',10)->comment('Usarse para: I=Inventory S=Sale');
             $table->string('type')->comment('Tipo: I=Input O=Output');
+            $table->boolean('require_cost')->default(1)->comment('¿Requerir costo en movimiento?');
             $table->foreignIdFor(User::class)->comment('Usuario creó o modificó');
         });
     }
