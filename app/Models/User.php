@@ -21,7 +21,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Http\RedirectResponse;
 
-// #[ObservedBy([UserObserver::class])]
+#[ObservedBy([UserObserver::class])]
 class User extends Authenticatable implements FilamentUser
 {
     use HasApiTokens;

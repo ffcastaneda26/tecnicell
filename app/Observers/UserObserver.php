@@ -16,16 +16,15 @@ class UserObserver
             if(!$user->hasRole('Admin')){
                 $user->assignRole('Admin');
             }
-        }elseif($user->id == 2){
-            if(!$user->hasRole('Gerente')){
-                $user->assignRole('Gerente');
-            }
-        } else{
-            if(Auth::user()->companies->count()){
-                $user->companies()->sync(Auth::user()->companies->first());
-             }
+            return;
         }
 
+        // Si usuario tiene el rol
+        if(Auth::user()->hasRole(env('APP_ROL_TO_SUSCRIPTOR','Gerente'))){
+            if(Auth::user()->companies->count()){
+                $user->companies()->sync(Auth::user()->companies->first());
+            }
+        }
     }
 
     /**
