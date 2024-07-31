@@ -35,6 +35,7 @@ class CreateCompany extends CreateRecord
 
     protected function getCreatedNotificationTitle(): ?string
     {
-        return __('Congratulations') . ',' . __('your') . ' ' . __('Company') . ' ' . __('has been' . ' ' . __('Created'));
+        return __('Congratulations,your Company has been created');
+
     }
 }

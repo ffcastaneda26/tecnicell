@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\ReparationStatusResource\Pages;
 use App\Filament\Resources\ReparationStatusResource\RelationManagers;
+use Illuminate\Support\Facades\Auth;
 
 class ReparationStatusResource extends Resource
 {
@@ -23,6 +24,10 @@ class ReparationStatusResource extends Resource
     protected static ?string $activeNavigationIcon = 'heroicon-s-shield-check';
     protected static ?int $navigationSort = 5;
 
+    public static function shouldRegisterNavigation(): bool
+    {
+        return Auth::user()->companies->count() || Auth::user()->hasRole('Admin');
+    }
     public static function getModelLabel(): string
     {
         return __('Reparation Status');
@@ -35,7 +40,7 @@ class ReparationStatusResource extends Resource
 
     public static function getPluralLabel(): ?string
     {
-        return __('Reparation Statuses');
+        return __('Reparation Statuses ');
     }
 
 

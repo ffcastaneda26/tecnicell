@@ -30,4 +30,10 @@ class EditCompany extends EditRecord
     {
         return $this->getResource()::getUrl('index');
     }
+
+    protected function getSavedNotificationTitle(): ?string
+    {
+        return __('Congratulations,your Company has been updated');
+
+    }
 }

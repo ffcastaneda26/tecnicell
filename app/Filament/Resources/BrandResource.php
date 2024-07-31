@@ -16,6 +16,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
 class BrandResource extends Resource
 {
@@ -25,7 +26,10 @@ class BrandResource extends Resource
     protected static ?string $activeNavigationIcon = 'heroicon-s-shield-check';
     protected static ?int $navigationSort = 1;
 
-
+    public static function shouldRegisterNavigation(): bool
+    {
+        return Auth::user()->companies->count() || Auth::user()->hasRole('Admin');
+    }
     public static function getNavigationLabel(): string
     {
         return __('Brands');

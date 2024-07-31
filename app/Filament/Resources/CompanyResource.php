@@ -33,6 +33,11 @@ class CompanyResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-building-office';
     protected static ?string $activeNavigationIcon = 'heroicon-s-shield-check';
 
+    public static function shouldRegisterNavigation(): bool
+    {
+        return Auth::user()->companies->count() || Auth::user()->hasRole('Admin');
+    }
+
     public static function getNavigationLabel(): string
     {
         return Auth::user()->hasrole('Admin') ? __('Companies') : __('Company');

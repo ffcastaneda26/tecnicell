@@ -34,7 +34,10 @@ class WarehouseResource extends Resource
         return __('Branches');
     }
 
-
+    public static function shouldRegisterNavigation(): bool
+    {
+        return Auth::user()->companies->count() || Auth::user()->hasRole('Admin');
+    }
     public static function getNavigationLabel(): string
     {
         return __('Warehouses');

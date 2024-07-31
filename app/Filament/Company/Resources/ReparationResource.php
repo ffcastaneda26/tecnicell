@@ -38,6 +38,10 @@ class ReparationResource extends Resource
     protected static ?int $navigationSort = 12;
 
 
+    public static function shouldRegisterNavigation(): bool
+    {
+        return Auth::user()->companies->count() || Auth::user()->hasRole('Admin');
+    }
     public static function getModelLabel(): string
     {
         return __('Reparation');

@@ -36,6 +36,10 @@ class DiagnosticResource extends Resource
     protected static ?string $activeNavigationIcon = 'heroicon-s-shield-check';
     protected static ?int $navigationSort = 11;
 
+    public static function shouldRegisterNavigation(): bool
+    {
+        return Auth::user()->companies->count() || Auth::user()->hasRole('Admin');
+    }
 
     public static function getModelLabel(): string
     {
@@ -66,13 +70,25 @@ class DiagnosticResource extends Resource
         }
         return null;
     }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        if (!Auth::user()->hasRole('Admin')) {
+            $company = Auth::user()->companies->first();
+            if($company){
+                return $company->diagnostics()->count() < 1 ? 'danger' : 'success';
+
+            }
+        }
+        return null;
+    }
     public static function getEloquentQuery(): Builder
     {
         if (Auth::user()->hasrole('Admin')) {
             return parent::getEloquentQuery();
         }
         $company = Auth::user()->companies->first();
-        
+
         return parent::getEloquentQuery()
             ->where('company_id', $company->id);
 

@@ -39,7 +39,10 @@ class DeviceResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-device-phone-mobile';
     protected static ?string $activeNavigationIcon = 'heroicon-s-shield-check';
     protected static ?int $navigationSort = 10;
-
+    public static function shouldRegisterNavigation(): bool
+    {
+        return Auth::user()->companies->count() || Auth::user()->hasRole('Admin');
+    }
 
     public static function getNavigationLabel(): string
     {

@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\CotizationStatusResource\Pages;
 use App\Filament\Resources\CotizationStatusResource\RelationManagers;
+use Illuminate\Support\Facades\Auth;
 
 class CotizationStatusResource extends Resource
 {
@@ -22,6 +23,11 @@ class CotizationStatusResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-list-bullet';
     protected static ?string $activeNavigationIcon = 'heroicon-s-shield-check';
     protected static ?int $navigationSort = 4;
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return Auth::user()->companies->count() || Auth::user()->hasRole('Admin');
+    }
 
     public static function getModelLabel(): string
     {

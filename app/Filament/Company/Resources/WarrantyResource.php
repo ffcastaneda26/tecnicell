@@ -34,7 +34,10 @@ class WarrantyResource extends Resource
     protected static ?string $activeNavigationIcon = 'heroicon-s-shield-check';
     protected static ?int $navigationSort = 13;
 
-
+    public static function shouldRegisterNavigation(): bool
+    {
+        return Auth::user()->companies->count() || Auth::user()->hasRole('Admin');
+    }
     public static function getModelLabel(): string
     {
         return __('Warranty');

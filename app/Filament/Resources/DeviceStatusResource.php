@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\DeviceStatusResource\Pages;
 use App\Filament\Resources\DeviceStatusResource\RelationManagers;
+use Illuminate\Support\Facades\Auth;
 
 class DeviceStatusResource extends Resource
 {
@@ -22,6 +23,10 @@ class DeviceStatusResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-battery-50';
     protected static ?string $activeNavigationIcon = 'heroicon-s-shield-check';
     protected static ?int $navigationSort = 3;
+    public static function shouldRegisterNavigation(): bool
+    {
+        return Auth::user()->companies->count() || Auth::user()->hasRole('Admin');
+    }
 
     public static function getModelLabel(): string
     {

@@ -49,7 +49,10 @@ class InvMovementResource extends Resource
     protected static ?string $activeNavigationIcon = 'heroicon-s-shield-check';
     protected static ?int $navigationSort = 2;
 
-
+    public static function shouldRegisterNavigation(): bool
+    {
+        return Auth::user()->companies->count() || Auth::user()->hasRole('Admin');
+    }
     public static function getNavigationLabel(): string
     {
         return __('Inv Movements');

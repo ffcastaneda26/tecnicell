@@ -30,6 +30,11 @@ class UserResource extends Resource
 
     protected static ?int $navigationSort = 0;
 
+    public static function shouldRegisterNavigation(): bool
+    {
+        return Auth::user()->companies->count() || Auth::user()->hasRole('Admin');
+    }
+
     // protected static ?string $cluster = Security::class;
     /** Si desea quita rel cluster descomentar las líneas siguientes */
     public static function getNavigationGroup(): string
