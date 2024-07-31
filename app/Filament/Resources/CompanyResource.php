@@ -33,19 +33,15 @@ class CompanyResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-building-office';
     protected static ?string $activeNavigationIcon = 'heroicon-s-shield-check';
 
-    public static function shouldRegisterNavigation(): bool
-    {
-        return Auth::user()->companies->count() || Auth::user()->hasRole('Admin');
-    }
-
     public static function getNavigationLabel(): string
     {
-        return Auth::user()->hasrole('Admin') ? __('Companies') : __('Company');
+        return Auth::user()->hasRole('Admin') ? __('Companies') : __('Company');
     }
 
     public static function getNavigationSort(): ?int
     {
-        return Auth::user()->hasrole('Admin') ? 5 : 1;
+        return 0;
+        // return Auth::user()->hasRole('Admin') ? 5 : 1;
     }
 
     public static function getModelLabel(): string
@@ -85,9 +81,13 @@ class CompanyResource extends Resource
 
 
         if (Auth::user()->companies->count()) {
+
             return parent::getEloquentQuery()
-                ->where('id',Auth::user()->companies->first()->id );
+                ->wherehas('users',function($query){
+                    $query->where('user_id',Auth::user()->id);
+                });
         }
+
 
 
     }
@@ -241,12 +241,9 @@ class CompanyResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->searchable(CompanyResource::isSearcheable());
     }
+
 
     public static function getRelations(): array
     {
@@ -263,4 +260,10 @@ class CompanyResource extends Resource
             'edit' => Pages\EditCompany::route('/{record}/edit'),
         ];
     }
+
+    private static function isSearcheable(): bool
+    {
+        return Auth::user()->hasRole('Admin') || Auth::user()->companies->count() > 5;
+    }
+
 }
