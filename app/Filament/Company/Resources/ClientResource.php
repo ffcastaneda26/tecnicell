@@ -61,7 +61,9 @@ class ClientResource extends Resource
     {
         if (!Auth::user()->hasRole('Admin')) {
             $company = Auth::user()->companies->first();
-            return $company->clients()->count() ? $company->clients()->count() : __('There are no Clients');
+            if($company){
+                return $company->clients()->count() ? $company->clients()->count() : __('There are no Clients');
+            }
         }
         return null;
     }
@@ -72,7 +74,9 @@ class ClientResource extends Resource
     {
         if(!Auth::user()->hasRole('Admin')){
             $company = Auth::user()->companies->first();
-            return $company->branches()->count() < 1 ? 'danger' : 'success';
+            if($company){
+                return $company->branches()->count() < 1 ? 'danger' : 'success';
+            }
         }
         return null;
     }

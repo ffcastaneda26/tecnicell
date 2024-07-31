@@ -48,10 +48,15 @@ class CompanyResource extends Resource
         return __('Company');
     }
 
+    public static function canCreate(): bool
+    {
+
+        return !Auth::user()->companies->count();
+    }
 
     public static function getPluralLabel(): ?string
     {
-        return Auth::user()->hasrole('Admin') ? __('Companies') : __('Company');
+        return Auth::user()->hasRole('Admin') ? __('Companies') : __('Company');
 
     }
     public static function getNavigationGroup(): string

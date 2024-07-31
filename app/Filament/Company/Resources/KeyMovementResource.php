@@ -61,7 +61,10 @@ class KeyMovementResource extends Resource
     {
         if (!Auth::user()->hasRole('Admin')) {
             $company = Auth::user()->companies->first();
-            return $company->key_movements->count() ? $company->key_movements()->count() : '';
+            if($company){
+                return $company->key_movements->count() ? $company->key_movements()->count() : '';
+
+            }
         }
         return null;
     }
@@ -72,7 +75,10 @@ class KeyMovementResource extends Resource
     {
         if (!Auth::user()->hasRole('Admin')) {
             $company = Auth::user()->companies->first();
-            return $company->key_movements->count() < 1 ? 'danger' : 'success';
+            if($company){
+                return $company->key_movements->count() < 1 ? 'danger' : 'success';
+
+            }
         }
         return null;
     }

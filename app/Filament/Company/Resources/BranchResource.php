@@ -61,7 +61,10 @@ class BranchResource extends Resource
     {
         if (!Auth::user()->hasRole('Admin')) {
             $company = Auth::user()->companies->first();
-            return $company->branches()->count() ? $company->branches()->count() : __('There are no Branches');
+            if($company){
+                return $company->branches()->count() ? $company->branches()->count() : __('There are no Branches');
+            }
+
         }
         return null;
     }
@@ -72,7 +75,9 @@ class BranchResource extends Resource
     {
         if(!Auth::user()->hasRole('Admin')){
             $company = Auth::user()->companies->first();
-            return $company->branches()->count() < 1 ? 'danger' : 'success';
+            if($company){
+                return $company->branches()->count() < 1 ? 'danger' : 'success';
+            }
         }
         return null;
     }

@@ -60,7 +60,9 @@ class DiagnosticResource extends Resource
     {
         if (!Auth::user()->hasRole('Admin')) {
             $company = Auth::user()->companies->first();
-            return $company->diagnostics()->count() ? $company->devices()->count() : __('There are no Diagnostics');
+            if($company){
+                return $company->diagnostics()->count() ? $company->devices()->count() : __('There are no Diagnostics');
+            }
         }
         return null;
     }
@@ -70,7 +72,7 @@ class DiagnosticResource extends Resource
             return parent::getEloquentQuery();
         }
         $company = Auth::user()->companies->first();
-
+        
         return parent::getEloquentQuery()
             ->where('company_id', $company->id);
 

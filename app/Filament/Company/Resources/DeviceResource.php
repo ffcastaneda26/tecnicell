@@ -67,7 +67,9 @@ class DeviceResource extends Resource
     {
         if (!Auth::user()->hasRole('Admin')) {
             $company = Auth::user()->companies->first();
-            return $company->devices()->count() ? $company->devices()->count() : __('There are no Devices');
+            if($company){
+                return $company->devices()->count() ? $company->devices()->count() : __('There are no Devices');
+            }
         }
         return null;
     }
@@ -78,7 +80,10 @@ class DeviceResource extends Resource
     {
         if (!Auth::user()->hasRole('Admin')) {
             $company = Auth::user()->companies->first();
-            return $company->devices()->count() < 1 ? 'danger' : 'success';
+            if($company){
+                return $company->devices()->count() < 1 ? 'danger' : 'success';
+            }
+
         }
         return null;
     }

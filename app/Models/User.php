@@ -96,9 +96,12 @@ class User extends Authenticatable implements FilamentUser
         }
 
         if ($panel->getId() === 'company') {
-            return $this->hasRole(env('APP_ROL_TO_SUSCRIPTOR', 'Gerente')) && $this->companies->count() && $this->companies->first()->active;
-
+            return $this->hasRole(env('APP_ROL_TO_SUSCRIPTOR', 'Gerente'));
         }
+        // if ($panel->getId() === 'company') {
+        //     return $this->hasRole(env('APP_ROL_TO_SUSCRIPTOR', 'Gerente')) && $this->companies->count() && $this->companies->first()->active;
+
+        // }
 
         return false;
     }

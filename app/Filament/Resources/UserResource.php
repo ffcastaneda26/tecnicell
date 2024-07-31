@@ -53,12 +53,14 @@ class UserResource extends Resource
     {
         if (Auth::user()->hasRole('Admin')) {
             return static::getModel()::role(['Admin','Gerente'])->count();
-        }else{
-            return static::getModel()::whereHas('companies',function($query){
-                $query->where('company_id', Auth::user()->companies->first()->id);
-            })->count();
-
         }
+        // else{
+        //     return static::getModel()::whereHas('companies',function($query){
+        //         $query->where('company_id', Auth::user()->companies->first()->id);
+        //     })->count();
+
+        // }
+        return null;
     }
 
 

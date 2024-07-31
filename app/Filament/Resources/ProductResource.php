@@ -59,7 +59,10 @@ class ProductResource extends Resource
     {
         if (!Auth::user()->hasRole('Admin')) {
             $company = Auth::user()->companies->first();
-            return $company->products()->count() ? $company->products()->count() : __('There are no products');
+            if($company){
+                return $company->products()->count() ? $company->products()->count() : __('There are no products');
+
+            }
         }
         return null;
     }
@@ -70,7 +73,10 @@ class ProductResource extends Resource
     {
         if (!Auth::user()->hasRole('Admin')) {
             $company = Auth::user()->companies->first();
-            return $company->products()->count() < 1 ? 'danger' : 'success';
+            if($company){
+                return $company->products()->count() < 1 ? 'danger' : 'success';
+
+            }
         }
         return null;
     }

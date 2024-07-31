@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Jetstream\Jetstream;
+use Spatie\Permission\Models\Role;
 
 class CreateNewUser implements CreatesNewUsers
 {
@@ -26,10 +27,21 @@ class CreateNewUser implements CreatesNewUsers
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
         ])->validate();
 
-        return User::create([
+        $user = User::create([
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
         ]);
+
+
+        if(env('APP_ASSIGN_ROLE_NEW_USER',false)){
+
+            $role_suscriptor=Role::where('name',env('APP_ROL_TO_SUSCRIPTOR','Gerente'))->first();
+            // dd('Si debe asignar el rol ' . $role_suscriptor->name);
+            if($role_suscriptor){
+                $user->assignRole($role_suscriptor);
+            }
+        }
+        return $user;
     }
 }

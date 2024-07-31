@@ -61,7 +61,10 @@ class CotizationResource extends Resource
     {
         if (!Auth::user()->hasRole('Admin')) {
             $company = Auth::user()->companies->first();
-            return $company->cotizations()->count() ? $company->devices()->count() : '';
+            if($company){
+                return $company->cotizations()->count() ? $company->devices()->count() : '';
+
+            }
         }
         return null;
     }

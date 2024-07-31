@@ -61,7 +61,9 @@ class WarehouseResource extends Resource
     {
         if (!Auth::user()->hasRole('Admin')) {
             $company = Auth::user()->companies->first();
-            return $company->warehouses()->count() ? $company->warehouses()->count() : '';
+            if($company){
+                return $company->warehouses()->count() ? $company->warehouses()->count() : '';
+            }
         }
         return null;
     }
@@ -71,7 +73,11 @@ class WarehouseResource extends Resource
     {
         if (!Auth::user()->hasRole('Admin')) {
             $company = Auth::user()->companies->first();
-            return $company->branches()->count() < 1 ? 'danger' : 'success';
+            if($company){
+                return $company->warehouses()->count() < 1 ? 'danger' : 'success';
+
+
+            }
         }
         return null;
     }

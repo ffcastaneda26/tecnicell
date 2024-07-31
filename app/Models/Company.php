@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Auth;
 
 class Company extends Model
 {
@@ -34,6 +35,15 @@ class Company extends Model
         'user_id',
     ];
 
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function (Company $company) {
+            $company->attachUser();
+        });
+    }
 
     protected function rfc(): Attribute
     {
@@ -112,7 +122,14 @@ class Company extends Model
         return $this->belongsToMany(User::class);
     }
 
-
+    /** De apoyo y control */
+    public function attachUser($user = null)
+    {
+        $user = $user ?? Auth::user();
+        if($user){
+            $this->users()->attach($user->id);
+        }
+    }
 
 
 }

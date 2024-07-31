@@ -57,7 +57,9 @@ class WarrantyResource extends Resource
     {
         if (!Auth::user()->hasRole('Admin')) {
             $company = Auth::user()->companies->first();
-            return $company->warranties()->count() ? $company->warranties()->count() : '';
+            if($company){
+                return $company->warranties()->count() ? $company->warranties()->count() : '';
+            }
         }
         return null;
     }

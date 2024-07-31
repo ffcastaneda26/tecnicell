@@ -60,7 +60,9 @@ class ReparationResource extends Resource
     {
         if (!Auth::user()->hasRole('Admin')) {
             $company = Auth::user()->companies->first();
-            return $company->reparations()->count() ? $company->devices()->count() : '';
+            if($company){
+                return $company->reparations()->count() ? $company->devices()->count() : '';
+            }
         }
         return null;
     }
