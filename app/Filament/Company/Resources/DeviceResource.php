@@ -59,7 +59,6 @@ class DeviceResource extends Resource
     public static function getPluralLabel(): ?string
     {
         return __('Devices');
-
     }
     public static function getNavigationGroup(): string
     {
@@ -70,7 +69,7 @@ class DeviceResource extends Resource
     {
         if (!Auth::user()->hasRole('Admin')) {
             $company = Auth::user()->companies->first();
-            if($company){
+            if ($company) {
                 return $company->devices()->count() ? $company->devices()->count() : __('There are no Devices');
             }
         }
@@ -83,10 +82,9 @@ class DeviceResource extends Resource
     {
         if (!Auth::user()->hasRole('Admin')) {
             $company = Auth::user()->companies->first();
-            if($company){
+            if ($company) {
                 return $company->devices()->count() < 1 ? 'danger' : 'success';
             }
-
         }
         return null;
     }
@@ -101,7 +99,6 @@ class DeviceResource extends Resource
 
         return parent::getEloquentQuery()
             ->where('company_id', $company->id);
-
     }
     public static function form(Form $form): Form
     {
@@ -110,7 +107,6 @@ class DeviceResource extends Resource
                 Section::make()
                     ->schema([
                         Select::make('device_type_id')
-                            ->translateLabel()
                             ->options(function (): array {
                                 if (App::isLocale('en')) {
                                     return DeviceType::all()->pluck('english', 'id')->all();
@@ -122,19 +118,30 @@ class DeviceResource extends Resource
                             ->preload()
                             ->searchable()
                             ->translateLabel(),
-
                         Select::make('brand_id')
+                            ->relationship(
+                                name: 'brand',
+                                titleAttribute: 'name',
+                                modifyQueryUsing: fn(Builder $query) => $query->whereHas('models'),
+                            )
                             ->required()
-                            ->relationship('brand')
+                            ->reactive()
+                            ->preload()
                             ->translateLabel()
-                            ->options(Brand::query()->wherehas('models')->pluck('name', 'id'))
-                            ->live(),
-                        Select::make('device_model_id')
+                            ->afterStateUpdated(fn(callable $set) => $set('model_id', null)),
+                       Select::make('device_model_id')
                             ->translateLabel()
-                            ->options(fn(Get $get): Collection => DeviceModel::query()
-                                ->where('brand_id', $get('id_brand'))
-                                ->pluck('name', 'id'))
-                            ->required(),
+                            ->required()
+                            ->options(function (callable $get) {
+                                $brand = Brand::find($get('brand_id'));
+                                if (!$brand) {
+                                    return;
+                                }
+                                return $brand->models->pluck('name', 'id');
+                            })
+                            ->disabled(fn(callable $get) => !$get('brand_id')),
+
+
                         Select::make('device_status_id')
                             ->translateLabel()
 
@@ -193,10 +200,11 @@ class DeviceResource extends Resource
                     ->translateLabel()
                     ->sortable()
                     ->searchable(),
-                TextColumn::make('status' . ExcellsusTrait::getAttributeLanguage())
-                    ->label(__('Status'))
-                    ->sortable()
-                    ->searchable(),
+                // TODO: Poner nombre de estado con la relación;
+                // TextColumn::make('status.name')
+                //     ->translateLabel()
+                //     ->sortable()
+                //     ->searchable(),
 
             ])
             ->filters([

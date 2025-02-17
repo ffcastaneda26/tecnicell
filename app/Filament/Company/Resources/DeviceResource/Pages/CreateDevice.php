@@ -13,7 +13,6 @@ class CreateDevice extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['brand_id'] = $data['id_brand'];
         $data['user_id'] = Auth::user()->id;
         $data['company_id'] = Auth::user()->companies->first()->id;
         return $data;

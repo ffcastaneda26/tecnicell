@@ -6,9 +6,9 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
 
 
-// Route::get('/', function () {
-//     return view('welcome');
-// })->name('home');
+Route::get('/', function () {
+    return view('welcome');
+})->name('home');
 
 Route::get('/', function () {
     if (auth()->check()) {
