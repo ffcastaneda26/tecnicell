@@ -200,12 +200,10 @@ class DeviceResource extends Resource
                     ->translateLabel()
                     ->sortable()
                     ->searchable(),
-                // TODO: Poner nombre de estado con la relación;
-                // TextColumn::make('status.name')
-                //     ->translateLabel()
-                //     ->sortable()
-                //     ->searchable(),
-
+                TextColumn::make('status.' . ExcellsusTrait::getAttributeLanguage())
+                    ->translateLabel()
+                    ->sortable()
+                    ->searchable(),
             ])
             ->filters([
                 //
